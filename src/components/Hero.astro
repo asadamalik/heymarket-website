@@ -1,0 +1,70 @@
+---
+// Hero-chat variants (each viewable at its own route — see src/pages/[version].astro):
+//   v1 original loop · v2 + dropdown (default) · v3 + typing/streaming
+//   v4 + cursor dropdown · v5 + pause/perf/a11y · v6 + rotating scenarios
+import HeroChatV1 from "./HeroChat.astro";
+import HeroChatV2 from "./HeroChatV2.astro";
+import HeroChatV3 from "./HeroChatV3.astro";
+import HeroChatV4 from "./HeroChatV4.astro";
+import HeroChatV6 from "./HeroChatV6.astro";
+
+const variants = { v1: HeroChatV1, v2: HeroChatV2, v3: HeroChatV3, v4: HeroChatV4, v6: HeroChatV6 };
+const { chat = "v2" } = Astro.props;
+const HeroChat = variants[chat as keyof typeof variants] ?? HeroChatV2;
+
+const logos = [
+  { src: "/heymarket-website/assets/logo-kisco.webp", alt: "KISCO Senior Living", w: 248, h: 120 },
+  { src: "/heymarket-website/assets/logo-uhaul.webp", alt: "U-Haul", w: 203, h: 120 },
+  { src: "/heymarket-website/assets/logo-crst.webp", alt: "CRST", w: 227, h: 120 },
+  { src: "/heymarket-website/assets/logo-methodology.webp", alt: "Methodology", w: 303, h: 120 },
+  { src: "/heymarket-website/assets/logo-weyerhaeuser.webp", alt: "Weyerhaeuser", w: 400, h: 120 },
+];
+---
+<section class="relative overflow-hidden bg-ink text-paper" aria-labelledby="hero-heading">
+  <div class="container-x pt-14 pb-16 sm:pt-16">
+    <!-- Left text + CTA / Right mockup -->
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-x-[100px]">
+      <div class="text-center lg:text-left">
+        <h1
+          id="hero-heading"
+          class="text-[length:var(--text-hero)] font-[800] leading-[var(--text-hero--line-height)] tracking-[-0.02em]"
+        >
+          One agentic inbox <span class="text-yellow">for your texts and emails</span>
+        </h1>
+        <p class="mx-auto mt-6 max-w-xl text-[length:var(--text-lead)] leading-[var(--text-lead--line-height)] text-paper/80 lg:mx-0">
+          Put AI agents to work across texting and email. They answer questions, schedule
+          appointments, and route conversations automatically — while your team stays in control
+          from one secure, centralized inbox.
+        </p>
+        <div class="mt-9">
+          <a
+            href="#"
+            class="inline-block rounded-lg bg-yellow px-8 py-4 text-[18px] font-extrabold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
+          >Book a Demo</a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <HeroChat />
+      </div>
+    </div>
+
+    <!-- Trusted-by logos -->
+    <div class="mt-16 sm:mt-20">
+      <ul class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-14 lg:min-h-[60px] lg:flex-nowrap lg:justify-between lg:gap-x-6">
+        {logos.map((l) => (
+          <li class="flex items-center">
+            <img
+              src={l.src}
+              alt={l.alt}
+              width={l.w}
+              height={l.h}
+              loading="lazy"
+              class="h-10 w-auto opacity-80 transition-opacity hover:opacity-100 lg:h-[60px]"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

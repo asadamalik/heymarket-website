@@ -1,0 +1,22 @@
+# build output
+dist/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# logs
+npm-debug.log*
+# environment variables
+.env
+.env.production
+# macOS
+.DS_Store
+# local design working files (kept out of the repo)
+design-refs/
+.vercel
+# local source assets — build inputs only; processed outputs live in public/
+# (SF Pro .otf originals are Apple-licensed, keep them out of a public repo)
+/fonts/
+/logos/
+# local agent config
+.claude/

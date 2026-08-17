@@ -1,0 +1,64 @@
+---
+const tabs = [
+  "Message as a team",
+  "Start group conversations",
+  "Automate workflows",
+  "Create campaigns",
+  "Customize roles",
+];
+---
+<section class="bg-ink py-[var(--space-section)] text-paper" aria-labelledby="lifecycle-heading">
+  <div class="container-x text-center">
+    <h2
+      id="lifecycle-heading"
+      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+    >
+      Streamline communication across the customer lifecycle
+    </h2>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      {tabs.map((t, i) => (
+        <button
+          type="button"
+          aria-pressed={i === 0 ? "true" : "false"}
+          class={
+            i === 0
+              ? "rounded-full bg-yellow px-5 py-2.5 text-sm font-semibold text-ink"
+              : "rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-paper/70 transition-colors hover:bg-white/20"
+          }
+        >{t}</button>
+      ))}
+    </div>
+  </div>
+
+  <div class="container-x mt-12">
+    <div class="mx-auto grid max-w-[1120px] items-center gap-10 md:grid-cols-2">
+      <div class="flex justify-center md:justify-start">
+        <img
+          src="/heymarket-website/assets/mock-team.webp"
+          alt="A shared inbox with a conversation about a refund, an 'Assign to' menu selecting Jack Lee, and a private team comment asking Jack to process the refund."
+          width="578"
+          height="512"
+          loading="lazy"
+          class="h-auto w-full max-w-[540px]"
+        />
+      </div>
+      <div class="text-left">
+        <h3 class="text-[length:var(--text-h3)] font-[700] leading-tight tracking-[-0.01em]">Message as a team</h3>
+        <p class="mt-5 max-w-md text-[17px] leading-relaxed text-paper/75">
+          Send and receive messages from centralized inboxes. All of your team members can read and
+          respond to messages from desktop or their mobile phones.
+        </p>
+        <a
+          href="#"
+          class="group mt-6 inline-flex items-center gap-2 font-bold text-yellow underline underline-offset-4"
+        >
+          Explore all features
+          <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

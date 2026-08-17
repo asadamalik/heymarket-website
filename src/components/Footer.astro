@@ -1,0 +1,123 @@
+---
+const columns = [
+  {
+    heading: "Industries",
+    groups: [
+      { sub: null, links: ["Features", "Pricing", "SMS Compliance", "API"] },
+      {
+        sub: "SMS Integrations",
+        links: [
+          "Salesforce SMS",
+          "Microsoft SMS",
+          "HubSpot SMS",
+          "Shopify SMS",
+          "Slack SMS",
+          "Aircall SMS",
+          "Clio SMS",
+          "Zendesk SMS",
+        ],
+      },
+    ],
+  },
+  {
+    heading: "Solutions",
+    groups: [
+      {
+        sub: "Industries",
+        links: [
+          "Retail SMS",
+          "Healthcare SMS",
+          "Dispatch and Operations SMS",
+          "Higher Education SMS",
+          "Recruiting SMS",
+          "Load more",
+        ],
+      },
+      { sub: "Use Case", links: ["Customer Service SMS", "Marketing SMS"] },
+    ],
+  },
+  {
+    heading: "Resources",
+    groups: [
+      {
+        sub: null,
+        links: [
+          "All SMS Resources",
+          "Blog",
+          "SMS Templates Generator",
+          "Business SMS Glossary",
+          "Text to Landline",
+          "Omnichannel Messaging",
+        ],
+      },
+    ],
+  },
+  {
+    heading: "Learning",
+    groups: [{ sub: null, links: ["Customer Success Stories", "Help Center"] }],
+  },
+];
+
+const legal = ["Terms", "Privacy Policy", "DPA", "Status", "Sitemap"];
+---
+<footer class="bg-ink text-paper">
+  <div class="container-x py-16">
+    <!-- Try it yourself -->
+    <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+      <img src="/heymarket-website/assets/footer-bubble.webp" alt="" width="75" height="50" class="h-12 w-auto" />
+      <div>
+        <p class="text-lg font-bold text-yellow">Try it yourself</p>
+        <p class="text-[length:var(--text-h3)] font-[800] tracking-[-0.01em]">
+          Text <span class="text-yellow">"HEY"</span> to (415) 562-0500
+        </p>
+      </div>
+    </div>
+
+    <!-- Link columns -->
+    <div class="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+      {columns.map((col) => (
+        <div>
+          <h3 class="text-base font-bold text-yellow">{col.heading}</h3>
+          {col.groups.map((g) => (
+            <div class="mt-4">
+              {g.sub && <p class="mb-2 text-xs font-bold uppercase tracking-wide text-purple-70">{g.sub}</p>}
+              <ul class="space-y-2.5">
+                {g.links.map((l) => (
+                  <li>
+                    <a href="#" class="text-[15px] text-paper/75 transition-colors hover:text-paper">{l}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      <!-- Company column -->
+      <div>
+        <h3 class="text-base font-bold text-yellow">Company</h3>
+        <ul class="mt-4 space-y-2.5">
+          <li><a href="#" class="text-[15px] text-paper/75 transition-colors hover:text-paper">Careers</a></li>
+          <li><a href="#" class="text-[15px] text-paper/75 transition-colors hover:text-paper">About</a></li>
+          <li><a href="#" class="text-[15px] text-paper/75 transition-colors hover:text-paper">Text or call us: (415) 562-0500</a></li>
+          <li><a href="#" class="text-[15px] text-paper/75 transition-colors hover:text-paper">Contact sales</a></li>
+        </ul>
+        <img src="/heymarket-website/assets/badge-soc-hipaa.webp" alt="SOC 2 and HIPAA compliance badges" width="210" height="86" class="mt-6 h-16 w-auto" />
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-14 flex flex-col gap-6 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
+      <ul class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        {legal.map((l) => (
+          <li><a href="#" class="text-sm text-paper/70 transition-colors hover:text-paper">{l}</a></li>
+        ))}
+      </ul>
+      <p class="text-sm text-paper/60">2026 Common Sun, Inc.</p>
+      <div class="flex items-center gap-3">
+        <a href="#" aria-label="Download on the App Store"><img src="/heymarket-website/assets/badge-appstore.webp" alt="Download on the App Store" width="106" height="46" class="h-11 w-auto" /></a>
+        <a href="#" aria-label="Get it on Google Play"><img src="/heymarket-website/assets/badge-googleplay.webp" alt="Get it on Google Play" width="132" height="46" class="h-11 w-auto" /></a>
+      </div>
+    </div>
+  </div>
+</footer>

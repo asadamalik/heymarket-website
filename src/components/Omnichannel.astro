@@ -1,0 +1,64 @@
+---
+const tabs = ["Customer service", "Sales", "Marketing", "Operations", "Recruiting"];
+---
+<section class="bg-paper pb-[var(--space-section)]" aria-labelledby="omnichannel-heading">
+  <div class="container-x text-center">
+    <h2
+      id="omnichannel-heading"
+      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+    >
+      Grow your omnichannel messaging impact across every team
+    </h2>
+
+    <!-- Tab pills -->
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      {tabs.map((t, i) => (
+        <button
+          type="button"
+          aria-pressed={i === 0 ? "true" : "false"}
+          class={
+            i === 0
+              ? "rounded-full bg-purple px-5 py-2.5 text-sm font-semibold text-paper"
+              : "rounded-full bg-grey-f5 px-5 py-2.5 text-sm font-semibold text-grey-75 transition-colors hover:bg-ink-5"
+          }
+        >{t}</button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Feature card -->
+  <div class="container-x mt-10">
+    <div class="mx-auto grid max-w-[1120px] items-center gap-8 overflow-hidden rounded-3xl bg-beige px-6 py-10 sm:px-10 md:grid-cols-2 md:px-14 md:py-12">
+      <div class="text-left">
+        <p class="flex items-center gap-2 font-semibold text-purple">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 7-7m0 0h-5m5 0v5" />
+          </svg>
+          Reach a 60% customer response rate
+        </p>
+        <h3 class="mt-4 text-[length:var(--text-h3)] font-[700] leading-tight tracking-[-0.01em]">
+          Boost customer satisfaction
+        </h3>
+        <p class="mt-4 max-w-md text-[17px] leading-relaxed text-ink-70">
+          Shorten agent response times with <a href="#" class="underline decoration-ink-30 underline-offset-2 hover:decoration-ink">customer service SMS</a>
+          and email. Quickly triage customer questions, route and assign chats, and personalize replies.
+        </p>
+        <a
+          href="#"
+          class="mt-7 inline-block rounded-lg bg-purple px-6 py-3.5 text-[13px] font-bold uppercase tracking-wide text-paper transition-transform hover:-translate-y-0.5 hover:bg-purple/90"
+        >Learn More</a>
+      </div>
+
+      <div class="flex justify-center md:justify-end">
+        <img
+          src="/heymarket-website/assets/mock-cs-visual.webp"
+          alt="A customer service conversation showing a personalized greeting, a sentiment score of +70%, and 20% faster response time."
+          width="524"
+          height="362"
+          loading="lazy"
+          class="h-auto w-full max-w-[480px]"
+        />
+      </div>
+    </div>
+  </div>
+</section>

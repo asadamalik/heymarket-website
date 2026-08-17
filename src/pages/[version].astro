@@ -1,0 +1,47 @@
+---
+// Preview routes for each hero-chat variant: /v1, /v3, /v4, /v5, /v6.
+// ( / stays the default v2 via index.astro. ) Same page, only the Hero variant changes.
+import Base from "../layouts/Base.astro";
+import Announcement from "../components/Announcement.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import SharedInbox from "../components/SharedInbox.astro";
+import CustomerJourney from "../components/CustomerJourney.astro";
+import Omnichannel from "../components/Omnichannel.astro";
+import Integrations from "../components/Integrations.astro";
+import LifecycleTeam from "../components/LifecycleTeam.astro";
+import Security from "../components/Security.astro";
+import EmailHere from "../components/EmailHere.astro";
+import AiReach from "../components/AiReach.astro";
+import Compliance10DLC from "../components/Compliance10DLC.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Resources from "../components/Resources.astro";
+import Footer from "../components/Footer.astro";
+
+export function getStaticPaths() {
+  return ["v1", "v3", "v4", "v6"].map((version) => ({ params: { version } }));
+}
+
+const { version } = Astro.params;
+---
+<Base>
+  <Announcement />
+  <Nav />
+  <main>
+    <Hero chat={version} />
+    <SharedInbox />
+    <CustomerJourney />
+    <Omnichannel />
+    <Integrations />
+    <LifecycleTeam />
+    <Security />
+    <EmailHere />
+    <AiReach />
+    <Compliance10DLC />
+    <Testimonials />
+    <CtaBand />
+    <Resources />
+  </main>
+  <Footer />
+</Base>

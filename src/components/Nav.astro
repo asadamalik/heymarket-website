@@ -1,0 +1,55 @@
+---
+const links = ["Product", "Pricing", "Solutions", "Integrations", "Resources"];
+---
+<header class="sticky top-0 z-50 w-full bg-ink text-paper shadow-lg shadow-black/20">
+  <nav class="flex w-full items-center gap-6 px-[clamp(1.25rem,0.5rem+3vw,3rem)] py-4" aria-label="Main navigation">
+    <!-- Logo -->
+    <a href={import.meta.env.BASE_URL} class="shrink-0" aria-label="Heymarket home">
+      <img src="/heymarket-website/assets/heymarket-logo.webp" alt="Heymarket" width="212" height="44" class="h-8 w-auto" />
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="ml-4 hidden items-center gap-7 lg:flex">
+      {links.map((l) => (
+        <li>
+          <a
+            href="#"
+            class="text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow"
+          >{l}</a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Right actions -->
+    <div class="ml-auto hidden items-center gap-4 md:flex">
+      <a href="#" class="text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow">Sign In</a>
+      <a
+        href="#"
+        class="rounded-md bg-ink-70 px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-paper transition-colors hover:bg-ink-70/80"
+      >Free Trial</a>
+      <a
+        href="#"
+        class="rounded-md bg-yellow px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
+      >Book a Demo</a>
+    </div>
+
+    <!-- Mobile menu button -->
+    <details class="relative ml-auto md:hidden">
+      <summary class="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md hover:bg-ink-70/40">
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <span class="sr-only">Open menu</span>
+      </summary>
+      <div class="absolute right-0 top-12 z-50 w-56 rounded-xl border border-ink-70/60 bg-ink p-2 shadow-2xl">
+        {links.map((l) => (
+          <a href="#" class="block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40">{l}</a>
+        ))}
+        <hr class="my-2 border-ink-70/60" />
+        <a href="#" class="block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40">Sign In</a>
+        <a href="#" class="mt-1 block rounded-lg bg-ink-70 px-3 py-2.5 text-center text-[13px] font-bold uppercase">Free Trial</a>
+        <a href="#" class="mt-2 block rounded-lg bg-yellow px-3 py-2.5 text-center text-[13px] font-bold uppercase text-ink">Book a Demo</a>
+      </div>
+    </details>
+  </nav>
+</header>

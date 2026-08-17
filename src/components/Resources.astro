@@ -1,0 +1,41 @@
+---
+const posts = [
+  {
+    title: "A guide to 77 popular text abbreviations",
+    body: "Texting has made it easier to communicate—in most cases. But sometimes you run into phrases or words you don't understand.",
+  },
+  {
+    title: "How to send a text message to landline phones",
+    body: "Like telephone booths before them, landline phones are slowly becoming extinct. Today, less than 40% of households have landlines.",
+  },
+  {
+    title: "Texting etiquette 101: How to write polite texts on behalf of businesses",
+    body: "Global mobile business messaging traffic increased 10% from 2019 to 2020, when it hit 2.7 trillion.",
+  },
+];
+---
+<section class="bg-beige py-[var(--space-section)]" aria-labelledby="resources-heading">
+  <div class="container-x">
+    <h2
+      id="resources-heading"
+      class="text-center text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+    >
+      Free guides, templates, and best practices
+    </h2>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {posts.map((p) => (
+        <article class="flex flex-col rounded-2xl bg-paper p-7 transition-transform hover:-translate-y-1">
+          <h3 class="text-lg font-bold leading-snug text-ink">{p.title}</h3>
+          <p class="mt-3 flex-1 text-[15px] leading-relaxed text-ink-70">{p.body}</p>
+          <a href="#" class="group mt-6 inline-flex items-center gap-2 text-sm font-bold text-blue">
+            Read the blog
+            <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

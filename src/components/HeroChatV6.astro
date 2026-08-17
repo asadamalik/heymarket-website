@@ -1,0 +1,257 @@
+---
+// Hero chat — V6 = V2's live-chat engine, but the conversation rotates each loop to
+// showcase the agents' range: appointment scheduling → refund resolution → lead
+// qualification. Scenarios are data-driven; the client script re-renders the track
+// per scenario and runs the reveal timeline.
+type Msg = { side: "in" | "out" | "done"; text: string; time?: string };
+type Scenario = { contact: string; agent: string; seconds: number; avatar: string; msgs: Msg[] };
+
+const scenarios: Scenario[] = [
+  {
+    contact: "Maria Chen",
+    agent: "Scheduling Agent",
+    seconds: 4,
+    avatar: "/heymarket-website/assets/avatar-maria.webp",
+    msgs: [
+      { side: "in", text: "Hi! Can someone walk our clinic team through Heymarket this week?", time: "9:04 am" },
+      { side: "out", text: "Happy to help — I've booked a walkthrough for Thu, Aug 20 at 10:30 AM PT and sent the invite.", time: "9:04 am" },
+    ],
+  },
+  {
+    contact: "Jason Tout",
+    agent: "Q&A Agent",
+    seconds: 2,
+    avatar: "/heymarket-website/assets/avatar-jason.webp",
+    msgs: [
+      { side: "in", text: "Do you integrate with our EHR and stay HIPAA compliant?", time: "2:12 pm" },
+      { side: "out", text: "Yes — Heymarket is HIPAA-compliant and connects to your EHR through our API and native integrations.", time: "2:12 pm" },
+    ],
+  },
+  {
+    contact: "Priya Rao",
+    agent: "Lead Enrichment Agent",
+    seconds: 3,
+    avatar: "/heymarket-website/assets/avatar-priya.webp",
+    msgs: [
+      { side: "in", text: "We're a 40-person clinic exploring texting for appointment reminders.", time: "11:30 am" },
+      { side: "out", text: "Great fit! I've enriched your profile and routed you to our healthcare team — demo booked for Friday.", time: "11:31 am" },
+    ],
+  },
+];
+
+const first = scenarios[0];
+---
+<div class="relative mx-auto w-full max-w-[560px] lg:mr-0 lg:max-w-[600px]">
+  <!-- Scenario data for the client script -->
+  <script type="application/json" id="scenario-data" set:html={JSON.stringify(scenarios)}></script>
+
+  <!-- Purple panel peeking behind -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 rounded-[30px] bg-gradient-to-br from-purple to-blue-70"
+    style="transform: translate(-16px, -30px)"
+  ></div>
+
+  <!-- Window control dots on the purple bar -->
+  <div class="absolute -top-[17px] left-[15px] z-10 flex gap-2" aria-hidden="true">
+    <span class="h-[10px] w-[10px] rounded-full bg-white"></span>
+    <span class="h-[10px] w-[10px] rounded-full bg-white"></span>
+    <span class="h-[10px] w-[10px] rounded-full bg-white"></span>
+  </div>
+
+  <!-- Window -->
+  <div class="relative overflow-visible rounded-[28px] bg-white shadow-2xl">
+    <div class="relative rounded-[28px] border-2 border-black bg-white px-5 pt-5 pb-6 sm:px-6">
+      <!-- Header (contact + assigned agent update per scenario) -->
+      <div class="flex items-center justify-between gap-2 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="contact-name text-[15px] font-bold text-ink sm:text-base">{first.contact}</span>
+          <img src="/heymarket-website/assets/sms.svg" alt="SMS" width="20" height="20" class="h-5 w-5" />
+        </div>
+        <div class="flex items-center gap-1.5 text-[13px] sm:text-sm">
+          <span class="text-grey-75">Assignee:</span>
+          <span class="agent-name font-bold text-purple">{first.agent}</span>
+          <img src="/heymarket-website/assets/hey-ai.svg" alt="" width="18" height="18" class="h-4 w-4" />
+        </div>
+      </div>
+      <div class="-mx-5 border-t border-black/10 sm:-mx-6"></div>
+
+      <!-- Conversation (rebuilt per scenario by the client script) -->
+      <div class="chat-scroll">
+        <div class="chat-track text-[14px] sm:text-[15px]">
+          <!-- SSR: first scenario (also the reduced-motion / no-JS view) -->
+          {first.msgs.map((m, i) => {
+            const inner =
+              m.side === "in"
+                ? `<div class="flex items-end gap-2.5"><img src="${first.avatar}" alt="" width="32" height="32" class="h-8 w-8 shrink-0 rounded-full object-cover" /><div class="rounded-2xl rounded-bl-md bg-grey-f5 px-4 py-2.5 text-ink">${m.text}</div><span class="whitespace-nowrap self-center text-xs text-grey-75">${m.time}</span></div>`
+                : m.side === "out"
+                ? `<div class="flex flex-col items-end gap-1"><span class="pr-1 text-[13px] font-bold text-purple">${first.agent}</span><div class="flex items-end justify-end gap-2.5"><span class="whitespace-nowrap self-center text-xs text-grey-75">${m.time}</span><div class="max-w-[80%] rounded-2xl rounded-br-md bg-gradient-to-br from-purple to-blue px-4 py-3 leading-snug text-white shadow-[0_10px_36px_-6px_rgba(93,63,211,0.75)]">${m.text}</div></div></div>`
+                : `<div class="flex items-center justify-end gap-1.5"><svg viewBox="0 0 24 24" class="h-4 w-4 text-[#22b95e]" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span class="text-[13px] font-bold text-[#22b95e]">${m.text}</span></div>`;
+            return <div class={`step step-${m.side}`} data-step={(1.1 + i * 1.2).toFixed(1)} set:html={inner} />;
+          })}
+        </div>
+        <div class="chat-fade" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating "AI Agent replied" badge — white card (seconds update per scenario) -->
+  <div
+    class="anim-badge absolute top-[54px] right-1 w-[168px] rounded-2xl border border-[#e9e9e9] bg-white px-[13px] py-3 text-center text-black shadow-[0_14px_34px_-12px_rgba(0,0,0,0.25)] sm:-right-9"
+  >
+    <img src="/heymarket-website/assets/hey-ai.svg" alt="" width="36" height="36" class="mx-auto h-9 w-9" />
+    <p class="mt-2 text-[13px] font-bold leading-tight">AI Agent Replied in</p>
+    <p class="mt-1 text-base font-bold leading-tight"><span class="badge-secs">{first.seconds}</span> seconds</p>
+  </div>
+</div>
+
+<style is:global>
+  /* Global (not scoped): the conversation is rebuilt via JS, so injected elements
+     must be reachable by these rules. Safe here — only V6's chat is on /v6. */
+  @keyframes badgeIn {
+    from { opacity: 0; transform: translateY(-8px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes msgIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .anim-badge {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.9);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .anim-badge.show { opacity: 1; transform: none; }
+
+  .chat-scroll {
+    position: relative;
+    height: 320px;
+    clip-path: inset(0 -20px -24px -20px);
+    transition: opacity 0.45s ease;
+  }
+  .chat-scroll.fade-out { opacity: 0; }
+  .chat-fade {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 34px;
+    background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0));
+    z-index: 5;
+    pointer-events: none;
+  }
+  .chat-track {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    will-change: transform;
+  }
+  .chat-track.animate { transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1); }
+  .step { display: none; }
+  .step.show { display: block; animation: msgIn 0.5s ease both; }
+
+  /* Incoming "typing…" indicator (customer composing before the message is received). */
+  .typing-dots { display: inline-flex; align-items: center; gap: 4px; height: 7px; }
+  .typing-dots span {
+    width: 6px; height: 6px; border-radius: 9999px; background: rgba(0, 0, 0, 0.32);
+    animation: typingBounce 1.2s infinite ease-in-out;
+  }
+  .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .anim-badge { opacity: 1 !important; animation: none !important; transform: none !important; }
+    .chat-scroll { height: auto; clip-path: none; }
+    .chat-fade { display: none; }
+    .chat-track { transform: none !important; transition: none !important; }
+    .step { display: block !important; animation: none !important; }
+    .step.typing-in { display: none !important; }
+  }
+</style>
+
+<script>
+  // Rotating-scenario loop: re-render the track per scenario, run the reveal timeline,
+  // then advance to the next scenario at the loop boundary.
+  const scroll = document.querySelector(".chat-scroll");
+  const track = document.querySelector(".chat-track");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (scroll instanceof HTMLElement && track instanceof HTMLElement && !reduce) {
+    type Msg = { side: "in" | "out" | "done"; text: string; time?: string };
+    type Scenario = { contact: string; agent: string; seconds: number; avatar: string; msgs: Msg[] };
+    const dataEl = document.getElementById("scenario-data");
+    const scenarios: Scenario[] = dataEl ? JSON.parse(dataEl.textContent || "[]") : [];
+    const contactEl = document.querySelector<HTMLElement>(".contact-name");
+    const agentEl = document.querySelector<HTMLElement>(".agent-name");
+    const badge = document.querySelector<HTMLElement>(".anim-badge");
+    const badgeSecs = document.querySelector<HTMLElement>(".badge-secs");
+
+    const avatarHTML = (src: string) => `<img src="${src}" alt="" width="32" height="32" class="h-8 w-8 shrink-0 rounded-full object-cover" />`;
+    const typingHTML = (av: string) =>
+      `<div class="flex items-end gap-2.5">${avatarHTML(av)}<div class="rounded-2xl rounded-bl-md bg-grey-f5 px-4 py-[15px]"><span class="typing-dots"><span></span><span></span><span></span></span></div></div>`;
+    const msgHTML = (m: Msg, av: string, agent: string) => {
+      if (m.side === "in")
+        return `<div class="flex items-end gap-2.5">${avatarHTML(av)}<div class="rounded-2xl rounded-bl-md bg-grey-f5 px-4 py-2.5 text-ink">${m.text}</div><span class="whitespace-nowrap self-center text-xs text-grey-75">${m.time}</span></div>`;
+      if (m.side === "out")
+        return `<div class="flex flex-col items-end gap-1"><span class="pr-1 text-[13px] font-bold text-purple">${agent}</span><div class="flex items-end justify-end gap-2.5"><span class="whitespace-nowrap self-center text-xs text-grey-75">${m.time}</span><div class="max-w-[80%] rounded-2xl rounded-br-md bg-gradient-to-br from-purple to-blue px-4 py-3 leading-snug text-white shadow-[0_10px_36px_-6px_rgba(93,63,211,0.75)]">${m.text}</div></div></div>`;
+      return `<div class="flex items-center justify-end gap-1.5"><svg viewBox="0 0 24 24" class="h-4 w-4 text-[#22b95e]" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg><span class="text-[13px] font-bold text-[#22b95e]">${m.text}</span></div>`;
+    };
+
+    const pin = () => {
+      track.style.transform = `translateY(${scroll.clientHeight - track.scrollHeight}px)`;
+    };
+
+    const render = (s: Scenario) => {
+      if (contactEl) contactEl.textContent = s.contact;
+      if (agentEl) agentEl.textContent = s.agent;
+      if (badgeSecs) badgeSecs.textContent = String(s.seconds);
+      const av = s.avatar;
+      track.innerHTML =
+        `<div class="step typing-in">${typingHTML(av)}</div>` +
+        s.msgs
+          .map((m, i) => `<div class="step step-${m.side}" data-step="${(1.1 + i * 1.2).toFixed(1)}">${msgHTML(m, av, s.agent)}</div>`)
+          .join("");
+    };
+
+    const HOLD = 2600;
+    const FADE = 450;
+    let idx = 0;
+    let timers: number[] = [];
+    const clearTimers = () => { timers.forEach((id) => clearTimeout(id)); timers = []; };
+
+    const begin = () => {
+      render(scenarios[idx]);
+      badge?.classList.remove("show");
+      track.classList.remove("animate");
+      pin();
+      void track.offsetHeight;
+      track.classList.add("animate");
+      scroll.classList.remove("fade-out");
+
+      const steps = Array.from(track.querySelectorAll<HTMLElement>(".step[data-step]"));
+      const typing = track.querySelector<HTMLElement>(".typing-in");
+      const events = [
+        // Customer is typing… then their message is received, the AI replies, and the badge lands.
+        { t: 400, fn: () => { typing?.classList.add("show"); requestAnimationFrame(() => requestAnimationFrame(pin)); } },
+        { t: 1100, fn: () => typing?.classList.remove("show") },
+        ...steps.map((el) => ({ t: parseFloat(el.dataset.step || "0") * 1000, fn: () => { el.classList.add("show"); requestAnimationFrame(() => requestAnimationFrame(pin)); } })),
+        { t: 2700, fn: () => badge?.classList.add("show") },
+      ];
+      const endT = Math.max(...events.map((e) => e.t)) + HOLD + FADE;
+
+      clearTimers();
+      for (const ev of events) timers.push(window.setTimeout(ev.fn, ev.t));
+      timers.push(window.setTimeout(() => { scroll.classList.add("fade-out"); badge?.classList.remove("show"); }, endT - FADE));
+      timers.push(window.setTimeout(() => { idx = (idx + 1) % scenarios.length; begin(); }, endT));
+    };
+
+    pin();
+    requestAnimationFrame(() => {
+      track.classList.add("animate");
+      begin();
+    });
+  }
+</script>
