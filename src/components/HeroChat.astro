@@ -116,25 +116,24 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
     </div>
   </div>
 
-  <!-- Floating: Salesforce card (hangs off the bottom-left, lg+ where there is room) -->
+  <!-- Floating: email notification — appointment confirmed (Figma 2821-6300) -->
   <div
-    class="anim absolute -bottom-8 -left-[50px] hidden w-[248px] rounded-2xl border border-black/5 bg-white p-4 shadow-2xl lg:block"
+    class="anim absolute -bottom-8 -left-[50px] hidden w-[240px] flex-col items-center gap-2 rounded-[23px] border border-[#e9e9e9] bg-white p-4 text-center shadow-2xl lg:flex"
     data-reveal="4.6"
   >
-    <div class="flex items-center justify-between">
-      <span class="font-bold text-ink">Salesforce</span>
-      <span class="rounded-md bg-[#22b95e]/15 px-2 py-0.5 text-[12px] font-semibold text-[#1a9f4e]">Updated</span>
-    </div>
-    <p class="mt-1.5 text-[13px] text-ink-70"><span class="font-bold text-ink">Event created</span> on Maria Chen</p>
-    <p class="text-[13px] text-ink-70">Thu, Aug 20 · 10:30 AM PT</p>
-    <div class="my-2.5 border-t border-black/10"></div>
-    <div class="flex items-center gap-2">
-      <span class="grid h-5 w-5 place-items-center rounded-full bg-[#22b95e]">
-        <svg viewBox="0 0 24 24" class="h-3 w-3 text-white" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-      </span>
-      <span class="text-[13px] text-ink-70">Logged by Scheduling Agent</span>
+    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-yellow">
+      <!-- Figma email glyph (node 2821-6301), solid envelope in black -->
+      <svg viewBox="0 0 24.6753 18.5065" class="w-[22px] text-black" fill="currentColor" aria-hidden="true">
+        <path d="M24.5377 2.75788C24.6274 3.08017 24.6753 3.41982 24.6753 3.77062V14.7359C24.6753 16.8175 22.9879 18.5065 20.9055 18.5065H3.76984C1.68781 18.5065 0 16.8187 0 14.7367V3.76984C0 3.41925 0.047858 3.07984 0.137398 2.75778L10.8103 11.5689C11.697 12.3008 12.9783 12.3008 13.8649 11.5689L24.5377 2.75788Z" />
+        <path d="M23.4505 0.989022L12.5558 9.98313C12.4292 10.0877 12.2461 10.0877 12.1194 9.98313L1.22462 0.98888C1.89528 0.374738 2.7888 0 3.76984 0H20.9055C21.8865 0 22.7799 0.374854 23.4505 0.989022Z" />
+      </svg>
+    </span>
+    <div class="flex flex-col items-center gap-1">
+      <p class="text-base font-bold leading-none text-black">Appointment Confirmed</p>
+      <div class="text-[13px] leading-[19px] text-[#4d4d4d]">
+        <p class="whitespace-nowrap font-bold">Thu, Aug 20 • 10:30 AM PT</p>
+        <p>is booked with Dr. Lee</p>
+      </div>
     </div>
   </div>
 
@@ -165,7 +164,7 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
   .anim,
   .anim-badge {
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .anim { transform: translateY(16px) scale(0.98); }
   .anim-badge { transform: translateY(-8px) scale(0.9); }
@@ -197,11 +196,11 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
     will-change: transform;
   }
   .chat-track.animate {
-    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
   }
   /* A queued message takes no space until revealed, then fades in as the track glides up. */
   .step { display: none; }
-  .step.show { display: block; animation: msgIn 0.5s ease both; }
+  .step.show { display: block; animation: msgIn 0.65s ease both; }
 
   @media (prefers-reduced-motion: reduce) {
     .anim,
@@ -232,9 +231,12 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
       track.style.transform = `translateY(${scroll.clientHeight - track.scrollHeight}px)`;
     };
 
+    // Reveal-cadence multiplier: >1 lengthens the pause between each interaction
+    // (the bubble's own fade/slide speed is unchanged — only the gaps grow).
+    const RATE = 1.8;
     const events = [
-      ...steps.map((el) => ({ el, t: parseFloat(el.dataset.step || "0") * 1000, grows: true })),
-      ...floats.map((el) => ({ el, t: parseFloat(el.dataset.reveal || "0") * 1000, grows: false })),
+      ...steps.map((el) => ({ el, t: parseFloat(el.dataset.step || "0") * 1000 * RATE, grows: true })),
+      ...floats.map((el) => ({ el, t: parseFloat(el.dataset.reveal || "0") * 1000 * RATE, grows: false })),
     ];
     const HOLD = 3200; // pause on the finished conversation before fading out
     const FADE = 450; // cross-fade duration at the loop boundary
