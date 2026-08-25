@@ -29,7 +29,7 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
         </div>
         <div class="flex items-center gap-1.5 text-[13px] sm:text-sm">
           <span class="text-grey-75">Assignee:</span>
-          <span class="font-bold text-purple">Scheduling Agent</span>
+          <span class="assignee-name font-bold text-purple">Q&A Agent</span>
           <img src="/heymarket-website/assets/hey-ai.svg" alt="" width="18" height="18" class="h-4 w-4" />
         </div>
       </div>
@@ -42,14 +42,14 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
         <div class="flex items-end gap-2.5">
           <img src={avatar} alt="" width="36" height="36" class="h-8 w-8 shrink-0 rounded-full object-cover" />
           <div class="rounded-2xl rounded-bl-md bg-grey-f5 px-4 py-2.5 text-ink">Hello, do I need a referral to book an appointment?</div>
-          <span class="whitespace-nowrap self-center text-xs text-grey-75">4:08 pm</span>
+          <span class="whitespace-nowrap self-center text-xs text-grey-75">8:50 am</span>
         </div>
 
         <!-- 2 · outbound Q&A Agent (shown) -->
         <div class="flex flex-col items-end gap-1">
           <span class="pr-1 text-[13px] font-bold text-purple">Q&A Agent</span>
           <div class="flex items-end justify-end gap-2.5">
-            <span class="whitespace-nowrap self-center text-xs text-grey-75">4:12 am</span>
+            <span class="whitespace-nowrap self-center text-xs text-grey-75">8:50 am</span>
             <div class="max-w-[80%] rounded-2xl rounded-br-md bg-gradient-to-br from-purple to-blue px-4 py-3 leading-snug text-white shadow-[0_10px_36px_-6px_rgba(93,63,211,0.75)]">
               Hi Maria, with your plan, you don't need a referral.
             </div>
@@ -89,7 +89,7 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
                 </div>
                 <div class="min-w-0">
                   <p class="font-bold text-ink">Heymarket walkthrough · 30 min</p>
-                  <p class="mt-0.5 text-[13px] text-ink-70">Thu, Aug 20 · 10:30 AM PT</p>
+                  <p class="mt-0.5 text-[13px] text-ink-70">Thu, Aug 20 · 10:00 AM PT</p>
                   <p class="text-[13px] text-grey-75">Video call · Dana R. + 1</p>
                 </div>
               </div>
@@ -131,7 +131,7 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
     <div class="flex flex-col items-center gap-1">
       <p class="text-base font-bold leading-none text-black">Appointment Confirmed</p>
       <div class="text-[13px] leading-[19px] text-[#4d4d4d]">
-        <p class="whitespace-nowrap font-bold">Thu, Aug 20 • 10:30 AM PT</p>
+        <p class="whitespace-nowrap font-bold">Thu, Aug 20 • 10:00 AM PT</p>
         <p>is booked with Dr. Lee</p>
       </div>
     </div>
@@ -159,6 +159,23 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
   @keyframes msgIn {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+  /* Assignee hand-off highlight: a soft purple pill glow (no zoom). */
+  @keyframes assigneeFlash {
+    0% { background-color: rgba(129, 88, 236, 0); }
+    22% { background-color: rgba(129, 88, 236, 0.2); }
+    100% { background-color: rgba(129, 88, 236, 0); }
+  }
+  .assignee-name {
+    display: inline-block;
+    border-radius: 8px;
+    /* Padding gives the highlight a pill shape; the negative margin cancels it
+       so surrounding layout never shifts. */
+    padding: 1px 6px;
+    margin: -1px -6px;
+  }
+  .assignee-name.flash {
+    animation: assigneeFlash 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
   /* Floating cards reveal (and fade back out at loop restart) via transitions. */
   .anim,
@@ -222,6 +239,11 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
   const scroll = document.querySelector(".chat-scroll");
   const track = document.querySelector(".chat-track");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Header assignee: starts as "Q&A Agent" (referral Q&A), becomes "Scheduling
+  // Agent" the moment the "Do you have openings…" message is received.
+  const assignee = document.querySelector<HTMLElement>(".assignee-name");
+  const QA_AGENT = "Q&A Agent";
+  const SCHED_AGENT = "Scheduling Agent";
 
   if (scroll instanceof HTMLElement && track instanceof HTMLElement && !reduce) {
     const steps = Array.from(track.querySelectorAll<HTMLElement>(".step"));
@@ -250,6 +272,10 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
       timers = [];
       steps.forEach((s) => s.classList.remove("show"));
       floats.forEach((f) => f.classList.remove("show"));
+      if (assignee) {
+        assignee.textContent = QA_AGENT; // reset to the starting assignee
+        assignee.classList.remove("flash");
+      }
       track.classList.remove("animate");
       pin();
       void track.offsetHeight;
@@ -264,6 +290,15 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
             if (ev.grows) requestAnimationFrame(() => requestAnimationFrame(pin));
           }, ev.t)
         );
+      }
+
+      // Flip the assignee to Scheduling Agent when the "openings" message arrives.
+      if (assignee) {
+        const swapAt = parseFloat(steps[0]?.dataset.step || "0") * 1000 * RATE;
+        timers.push(window.setTimeout(() => {
+          assignee.textContent = SCHED_AGENT;
+          assignee.classList.add("flash"); // highlight the hand-off
+        }, swapAt));
       }
 
       // Fade the finished conversation out just before restarting.
@@ -281,5 +316,9 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
       track.classList.add("animate");
       play();
     });
+  } else if (assignee) {
+    // Reduced motion / no animation: the whole conversation is shown at once,
+    // so reflect the final assignee.
+    assignee.textContent = SCHED_AGENT;
   }
 </script>
