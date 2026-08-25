@@ -294,7 +294,9 @@ const avatar = "/heymarket-website/assets/avatar-sadie.webp";
 
       // Flip the assignee to Scheduling Agent when the "openings" message arrives.
       if (assignee) {
-        const swapAt = parseFloat(steps[0]?.dataset.step || "0") * 1000 * RATE;
+        // Hand off a beat AFTER the "openings" message is received, not with it.
+        const msgInAt = parseFloat(steps[0]?.dataset.step || "0") * 1000 * RATE;
+        const swapAt = msgInAt + 800;
         timers.push(window.setTimeout(() => {
           assignee.textContent = SCHED_AGENT;
           assignee.classList.add("flash"); // highlight the hand-off
