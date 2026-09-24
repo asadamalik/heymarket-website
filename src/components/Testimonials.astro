@@ -27,11 +27,11 @@ const items = [
   <div class="container-x text-center">
     <h2
       id="testimonials-heading"
-      class="text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+      class="text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
     >
       Trusted by thousands of businesses
     </h2>
-    <p class="mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-ink-70">
+    <p class="mx-auto mt-5 max-w-2xl text-base leading-6 text-ink">
       Companies choose our business text messaging service for its powerful, intuitive features. We
       have the badges to prove it, but more importantly, here's what our customers have to say.
     </p>
@@ -43,25 +43,24 @@ const items = [
       class="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-[max(1.5rem,calc((100%-760px)/2))] pb-4 [-ms-overflow-style:none] [scrollbar-width:none]"
     >
       {items.map((t) => (
-        <article
+        <div
           data-featured={t.featured ? "" : null}
-          class={`flex min-w-[min(760px,85vw)] snap-center flex-col rounded-3xl p-8 text-left sm:p-10 ${
-            t.featured ? "bg-blue-70 text-paper" : "bg-purple-70/45 text-blue"
-          }`}
+          class={`flex min-w-[min(760px,85vw)] snap-center flex-col text-left ${t.featured ? "" : "opacity-40"}`}
         >
-          <div class={`flex gap-1 ${t.featured ? "text-paper" : "text-blue/60"}`}>
-            {[0, 1, 2, 3, 4].map(() => (
-              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
-                <path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z" />
-              </svg>
-            ))}
-          </div>
-          <h3 class="mt-5 text-2xl font-bold leading-snug">{t.title}</h3>
-          <p class={`mt-4 text-[16px] leading-relaxed ${t.featured ? "text-paper/90" : "text-blue/80"}`}>{t.body}</p>
-          <p class="mt-6 text-sm font-bold">
-            {t.author}{t.role && <span class="font-medium">, {t.role}</span>}
-          </p>
-        </article>
+          <article class="testi-card flex flex-1 flex-col bg-blue-70 p-8 text-paper sm:p-10">
+            <div class="flex gap-1">
+              {[0, 1, 2, 3, 4].map(() => (
+                <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z" />
+                </svg>
+              ))}
+            </div>
+            <h3 class="mt-5 text-[length:var(--text-h3)] font-[800] leading-[var(--text-h3--line-height)]">{t.title}</h3>
+            <p class="mt-4 text-base leading-6 text-paper">{t.body}</p>
+          </article>
+          <p class="mt-4 px-8 text-lg font-[800] leading-[22px] text-ink sm:px-10">{t.author}</p>
+          {t.role && <p class="px-8 text-base leading-6 text-ink sm:px-10">{t.role}</p>}
+        </div>
       ))}
     </div>
 
@@ -82,3 +81,8 @@ const items = [
     car.scrollLeft = Math.max(0, centre);
   }
 </script>
+
+<style>
+  /* Speech-bubble card, matching heymarket.com (tight bottom-left corner). */
+  .testi-card { border-radius: 40px 40px 40px 8px; }
+</style>

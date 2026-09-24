@@ -9,10 +9,10 @@ const points = [
   <div class="container-x">
     <div class="grid items-center gap-8 overflow-hidden rounded-3xl bg-yellow-30 px-6 py-10 sm:px-10 md:grid-cols-2 md:px-14 md:py-12">
       <div class="text-left">
-        <h2 id="email-heading" class="text-[length:var(--text-h3)] font-[800] tracking-[-0.01em]">Email is here!</h2>
+        <h2 id="email-heading" class="text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]">Email is here!</h2>
         <ul class="mt-6 space-y-3">
           {points.map((p) => (
-            <li class="flex items-center gap-3 text-[17px] font-medium text-ink">
+            <li class="flex items-center gap-3 text-base leading-6 text-ink">
               <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0 text-ink" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
               </svg>
@@ -22,7 +22,7 @@ const points = [
         </ul>
         <a
           href="#"
-          class="mt-8 inline-block rounded-lg bg-purple px-7 py-3.5 text-[13px] font-bold uppercase tracking-wide text-paper transition-transform hover:-translate-y-0.5 hover:bg-purple/90"
+          class="mt-8 inline-block rounded-lg bg-purple px-7 py-3.5 text-base font-[800] uppercase leading-6 text-paper transition-transform hover:-translate-y-0.5 hover:bg-purple/90"
         >Join</a>
       </div>
       <div class="flex justify-center md:justify-end">

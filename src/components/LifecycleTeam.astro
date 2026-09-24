@@ -1,59 +1,102 @@
 ---
-const tabs = [
-  "Message as a team",
-  "Start group conversations",
-  "Automate workflows",
-  "Create campaigns",
-  "Customize roles",
+// "Streamline communication across the customer lifecycle" — clickable +
+// auto-rotating tabs. Copy and illustrations sourced from heymarket.com.
+type Tab = { label: string; title: string; body: string; img: string; alt: string };
+const tabs: Tab[] = [
+  {
+    label: "Shared inbox",
+    title: "Message as a team",
+    body: "Send and receive text messages and emails from centralized inboxes. All of your team members can read and respond to messages from desktop or their mobile phones.",
+    img: "/heymarket-website/assets/life-inbox.webp",
+    alt: "A shared inbox with a refund conversation, an 'Assign to' menu selecting Jack Lee, and a private team comment.",
+  },
+  {
+    label: "Group messaging",
+    title: "Start group conversations",
+    body: "Text multiple contacts within a single conversation to keep everyone in the loop and move quickly.",
+    img: "/heymarket-website/assets/life-group.webp",
+    alt: "An illustration of sending a group text message in Heymarket.",
+  },
+  {
+    label: "Automations",
+    title: "Automate workflows",
+    body: "Automate text messages (and emails coming soon) to send based on keywords, timing, or message sentiment. Automatically reply, assign chats, or enroll contacts in a campaign.",
+    img: "/heymarket-website/assets/life-automations.webp",
+    alt: "Creating a text message and email automation with a trigger and action.",
+  },
+  {
+    label: "Broadcasts and campaigns",
+    title: "Create campaigns",
+    body: "Reach groups of contacts at once, schedule texts, and run drip campaigns. Leverage SMS templates and custom fields to personalize each text. Coming soon: add emails to engage customers on the right channel at the right time.",
+    img: "/heymarket-website/assets/life-campaigns.webp",
+    alt: "A business SMS and email drip campaign.",
+  },
+  {
+    label: "Enterprise administration",
+    title: "Customize roles",
+    body: "Customize roles and permissions. Sync your text messaging platform with your employee directory systems.",
+    img: "/heymarket-website/assets/life-admin.webp",
+    alt: "Customizing roles and permissions for team members.",
+  },
 ];
+const first = tabs[0];
 ---
 <section class="bg-ink py-[var(--space-section)] text-paper" aria-labelledby="lifecycle-heading">
   <div class="container-x text-center">
     <h2
       id="lifecycle-heading"
-      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
     >
       Streamline communication across the customer lifecycle
     </h2>
+    <p class="mx-auto mt-5 max-w-3xl text-lg leading-[26px] text-paper">
+      Heymarket pairs an intuitive interface with powerful tools. Here are a few of our top features
+      that make it easy to get up and running with business SMS and email fast to start building
+      strong relationships.
+    </p>
 
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
+    <div class="mt-8 flex flex-wrap justify-center gap-3" role="tablist" aria-label="Platform features">
       {tabs.map((t, i) => (
         <button
           type="button"
-          aria-pressed={i === 0 ? "true" : "false"}
-          class={
-            i === 0
-              ? "rounded-full bg-yellow px-5 py-2.5 text-sm font-semibold text-ink"
-              : "rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-paper/70 transition-colors hover:bg-white/20"
-          }
-        >{t}</button>
+          role="tab"
+          id={`life-tab-${i}`}
+          data-index={i}
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls="life-panel"
+          class="life-tab"
+        >{t.label}</button>
       ))}
     </div>
   </div>
 
   <div class="container-x mt-12">
-    <div class="mx-auto grid max-w-[1120px] items-center gap-10 md:grid-cols-2">
-      <div class="flex justify-center md:justify-start">
+    <div
+      id="life-panel"
+      role="tabpanel"
+      aria-labelledby="life-tab-0"
+      class="life-panel mx-auto grid max-w-[1120px] items-center gap-10 md:grid-cols-2"
+    >
+      <div class="flex h-[300px] items-center justify-center md:h-[380px] md:justify-start">
         <img
-          src="/heymarket-website/assets/mock-team.webp"
-          alt="A shared inbox with a conversation about a refund, an 'Assign to' menu selecting Jack Lee, and a private team comment asking Jack to process the refund."
-          width="578"
-          height="512"
+          class="life-img max-h-full w-auto object-contain"
+          src={first.img}
+          alt={first.alt}
+          width="540"
+          height="380"
           loading="lazy"
-          class="h-auto w-full max-w-[540px]"
         />
       </div>
       <div class="text-left">
-        <h3 class="text-[length:var(--text-h3)] font-[700] leading-tight tracking-[-0.01em]">Message as a team</h3>
-        <p class="mt-5 max-w-md text-[17px] leading-relaxed text-paper/75">
-          Send and receive messages from centralized inboxes. All of your team members can read and
-          respond to messages from desktop or their mobile phones.
+        <h3 class="life-title text-[length:var(--text-h3)] font-[800] leading-[var(--text-h3--line-height)]">{first.title}</h3>
+        <p class="life-body mt-5 max-w-md text-base leading-6 text-paper">
+          {first.body}
         </p>
         <a
           href="#"
           class="group mt-6 inline-flex items-center gap-2 font-bold text-yellow underline underline-offset-4"
         >
-          Explore all features
+          Learn more
           <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
           </svg>
@@ -61,4 +104,94 @@ const tabs = [
       </div>
     </div>
   </div>
+
+  <script type="application/json" id="life-data" set:html={JSON.stringify(tabs)}></script>
 </section>
+
+<style>
+  .life-tab {
+    border-radius: 9999px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    background: #1f1f1f;
+    color: #b3b3b3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .life-tab:hover { background: #2b2b2b; color: #d1d1d1; }
+  .life-tab[aria-selected="true"] {
+    background: var(--color-yellow-70);
+    color: var(--color-ink);
+  }
+  .life-panel { transition: opacity 0.25s ease; }
+  .life-panel.is-fading { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .life-panel { transition: none; }
+  }
+</style>
+
+<script>
+  type Tab = { label: string; title: string; body: string; img: string; alt: string };
+  const ROTATE_MS = 6000;
+
+  const section = document.querySelector<HTMLElement>('[aria-labelledby="lifecycle-heading"]');
+  const dataEl = document.getElementById("life-data");
+  if (section && dataEl) {
+    const tabs: Tab[] = JSON.parse(dataEl.textContent || "[]");
+    const btns = Array.from(section.querySelectorAll<HTMLButtonElement>(".life-tab"));
+    const panel = section.querySelector<HTMLElement>(".life-panel");
+    const title = section.querySelector<HTMLElement>(".life-title");
+    const body = section.querySelector<HTMLElement>(".life-body");
+    const img = section.querySelector<HTMLImageElement>(".life-img");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let current = 0;
+    let timer: number | undefined;
+
+    const apply = (i: number) => {
+      const t = tabs[i];
+      if (!t || !title || !body || !img || !panel) return;
+      title.textContent = t.title;
+      body.textContent = t.body;
+      img.src = t.img;
+      img.alt = t.alt;
+      panel.setAttribute("aria-labelledby", `life-tab-${i}`);
+      btns.forEach((b, bi) => b.setAttribute("aria-selected", bi === i ? "true" : "false"));
+      current = i;
+    };
+
+    const select = (i: number) => {
+      if (i === current) return;
+      if (reduce || !panel) { apply(i); return; }
+      panel.classList.add("is-fading");
+      window.setTimeout(() => {
+        apply(i);
+        panel.classList.remove("is-fading");
+      }, 250);
+    };
+
+    const stop = () => { if (timer) { window.clearInterval(timer); timer = undefined; } };
+    const start = () => {
+      if (reduce) return;
+      stop();
+      timer = window.setInterval(() => select((current + 1) % tabs.length), ROTATE_MS);
+    };
+
+    btns.forEach((b) =>
+      b.addEventListener("click", () => {
+        select(Number(b.dataset.index));
+        start();
+      })
+    );
+
+    section.addEventListener("mouseenter", stop);
+    section.addEventListener("mouseleave", start);
+    section.addEventListener("focusin", stop);
+    section.addEventListener("focusout", start);
+
+    start();
+  }
+</script>

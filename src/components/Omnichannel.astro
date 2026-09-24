@@ -1,64 +1,214 @@
 ---
-const tabs = ["Customer service", "Sales", "Marketing", "Operations", "Recruiting"];
+// "Grow your omnichannel messaging impact" — clickable + auto-rotating tabs.
+// Copy and illustrations sourced from heymarket.com.
+type Tab = { label: string; stat: string; title: string; body: string; img: string; alt: string };
+const tabs: Tab[] = [
+  {
+    label: "Customer service",
+    stat: "Reach a 60% customer response rate",
+    title: "Boost customer satisfaction",
+    body: "Shorten agent response times with customer service SMS and email. Quickly triage customer questions, route and assign chats, and personalize replies.",
+    img: "/heymarket-website/assets/omni-service.webp",
+    alt: "A customer service text conversation showing sentiment improving 70% and a 20% faster response time.",
+  },
+  {
+    label: "Sales",
+    stat: "Improve your sales conversion rate 9x",
+    title: "Qualify leads and close sales",
+    body: "Quickly respond to and convert leads with sales SMS. Schedule meeting reminders and automate prospect follow-ups to save time and speed up sales cycles.",
+    img: "/heymarket-website/assets/omni-sales.webp",
+    alt: "An automated sales text message with a trigger and action.",
+  },
+  {
+    label: "Marketing",
+    stat: "Improve your response rate 5x",
+    title: "Reach more people",
+    body: "Expand your reach with SMS marketing (and email coming soon). Send personalized messages to your contact lists, launch targeted campaigns, and capture leads across multiple channels.",
+    img: "/heymarket-website/assets/omni-marketing.webp",
+    alt: "An illustration of a text message and email marketing campaign.",
+  },
+  {
+    label: "Operations",
+    stat: "Grow your team’s capacity 10x",
+    title: "Improve internal operations",
+    body: "Streamline workflows with operational text messaging and email. Send employees important updates and scheduling information to their personal phones with targeted list sends.",
+    img: "/heymarket-website/assets/omni-operations.webp",
+    alt: "An illustration of sending an email to a list of customers.",
+  },
+  {
+    label: "Recruiting",
+    stat: "Screen candidates in 4 minutes",
+    title: "Recruit employees and staff faster",
+    body: "Engage talent at scale with email and text recruiting. Guide candidates through the hiring funnel with reminders, quick scheduling, and one-on-one conversations.",
+    img: "/heymarket-website/assets/omni-recruiting.webp",
+    alt: "Using a keyword to trigger an SMS recruiting automation.",
+  },
+];
+const first = tabs[0];
 ---
 <section class="bg-paper pb-[var(--space-section)]" aria-labelledby="omnichannel-heading">
   <div class="container-x text-center">
     <h2
       id="omnichannel-heading"
-      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
     >
       Grow your omnichannel messaging impact across every team
     </h2>
+    <p class="mx-auto mt-5 max-w-3xl text-lg leading-[26px] text-ink">
+      Use business SMS for messaging with customers from shared inboxes in any department.
+    </p>
 
     <!-- Tab pills -->
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
+    <div class="mt-8 flex flex-wrap justify-center gap-3" role="tablist" aria-label="Messaging use cases">
       {tabs.map((t, i) => (
         <button
           type="button"
-          aria-pressed={i === 0 ? "true" : "false"}
-          class={
-            i === 0
-              ? "rounded-full bg-purple px-5 py-2.5 text-sm font-semibold text-paper"
-              : "rounded-full bg-grey-f5 px-5 py-2.5 text-sm font-semibold text-grey-75 transition-colors hover:bg-ink-5"
-          }
-        >{t}</button>
+          role="tab"
+          id={`omni-tab-${i}`}
+          data-index={i}
+          aria-selected={i === 0 ? "true" : "false"}
+          aria-controls="omni-panel"
+          class="omni-tab"
+        >{t.label}</button>
       ))}
     </div>
   </div>
 
   <!-- Feature card -->
   <div class="container-x mt-10">
-    <div class="mx-auto grid max-w-[1120px] items-center gap-8 overflow-hidden rounded-3xl bg-beige px-6 py-10 sm:px-10 md:grid-cols-2 md:px-14 md:py-12">
+    <div
+      id="omni-panel"
+      role="tabpanel"
+      aria-labelledby="omni-tab-0"
+      class="omni-panel mx-auto grid max-w-[1120px] items-center gap-8 overflow-hidden rounded-3xl bg-beige px-6 py-10 sm:px-10 md:grid-cols-2 md:px-14 md:py-12"
+    >
       <div class="text-left">
-        <p class="flex items-center gap-2 font-semibold text-purple">
-          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+        <p class="flex items-center gap-2 text-lg font-semibold leading-[27px] text-purple">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 7-7m0 0h-5m5 0v5" />
           </svg>
-          Reach a 60% customer response rate
+          <span class="omni-stat">{first.stat}</span>
         </p>
-        <h3 class="mt-4 text-[length:var(--text-h3)] font-[700] leading-tight tracking-[-0.01em]">
-          Boost customer satisfaction
+        <h3 class="omni-title mt-4 text-[length:var(--text-h3)] font-[800] leading-[var(--text-h3--line-height)]">
+          {first.title}
         </h3>
-        <p class="mt-4 max-w-md text-[17px] leading-relaxed text-ink-70">
-          Shorten agent response times with <a href="#" class="underline decoration-ink-30 underline-offset-2 hover:decoration-ink">customer service SMS</a>
-          and email. Quickly triage customer questions, route and assign chats, and personalize replies.
+        <p class="omni-body mt-4 max-w-md text-base leading-6 text-ink">
+          {first.body}
         </p>
         <a
           href="#"
-          class="mt-7 inline-block rounded-lg bg-purple px-6 py-3.5 text-[13px] font-bold uppercase tracking-wide text-paper transition-transform hover:-translate-y-0.5 hover:bg-purple/90"
-        >Learn More</a>
+          class="omni-learn group mt-7 inline-flex items-center gap-2 font-bold text-purple underline underline-offset-4"
+        >
+          Learn more
+          <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </a>
       </div>
 
-      <div class="flex justify-center md:justify-end">
+      <div class="flex h-[280px] items-center justify-center md:h-[360px] md:justify-end">
         <img
-          src="/heymarket-website/assets/mock-cs-visual.webp"
-          alt="A customer service conversation showing a personalized greeting, a sentiment score of +70%, and 20% faster response time."
-          width="524"
-          height="362"
+          class="omni-img max-h-full w-auto object-contain"
+          src={first.img}
+          alt={first.alt}
+          width="500"
+          height="360"
           loading="lazy"
-          class="h-auto w-full max-w-[480px]"
         />
       </div>
     </div>
   </div>
+
+  <script type="application/json" id="omni-data" set:html={JSON.stringify(tabs)}></script>
 </section>
+
+<style>
+  .omni-tab {
+    border-radius: 9999px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    background: #f9f9f9;
+    color: #b3b3b3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .omni-tab:hover { background: #efefef; color: #8a8a8a; }
+  .omni-tab[aria-selected="true"] {
+    background: var(--color-purple);
+    color: var(--color-paper);
+  }
+  .omni-panel { transition: opacity 0.25s ease; }
+  .omni-panel.is-fading { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .omni-panel { transition: none; }
+  }
+</style>
+
+<script>
+  type Tab = { label: string; stat: string; title: string; body: string; img: string; alt: string };
+  const ROTATE_MS = 6000;
+
+  const section = document.querySelector<HTMLElement>('[aria-labelledby="omnichannel-heading"]');
+  const dataEl = document.getElementById("omni-data");
+  if (section && dataEl) {
+    const tabs: Tab[] = JSON.parse(dataEl.textContent || "[]");
+    const btns = Array.from(section.querySelectorAll<HTMLButtonElement>(".omni-tab"));
+    const panel = section.querySelector<HTMLElement>(".omni-panel");
+    const stat = section.querySelector<HTMLElement>(".omni-stat");
+    const title = section.querySelector<HTMLElement>(".omni-title");
+    const body = section.querySelector<HTMLElement>(".omni-body");
+    const img = section.querySelector<HTMLImageElement>(".omni-img");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let current = 0;
+    let timer: number | undefined;
+
+    const apply = (i: number) => {
+      const t = tabs[i];
+      if (!t || !stat || !title || !body || !img || !panel) return;
+      stat.textContent = t.stat;
+      title.textContent = t.title;
+      body.textContent = t.body;
+      img.src = t.img;
+      img.alt = t.alt;
+      panel.setAttribute("aria-labelledby", `omni-tab-${i}`);
+      btns.forEach((b, bi) => b.setAttribute("aria-selected", bi === i ? "true" : "false"));
+      current = i;
+    };
+
+    const select = (i: number) => {
+      if (i === current) return;
+      if (reduce || !panel) { apply(i); return; }
+      panel.classList.add("is-fading");
+      window.setTimeout(() => {
+        apply(i);
+        panel.classList.remove("is-fading");
+      }, 250);
+    };
+
+    const stop = () => { if (timer) { window.clearInterval(timer); timer = undefined; } };
+    const start = () => {
+      if (reduce) return;
+      stop();
+      timer = window.setInterval(() => select((current + 1) % tabs.length), ROTATE_MS);
+    };
+
+    btns.forEach((b) =>
+      b.addEventListener("click", () => {
+        select(Number(b.dataset.index));
+        start(); // reset the rotation timer on manual selection
+      })
+    );
+
+    // Pause auto-rotation while the user is interacting with the section.
+    section.addEventListener("mouseenter", stop);
+    section.addEventListener("mouseleave", start);
+    section.addEventListener("focusin", stop);
+    section.addEventListener("focusout", start);
+
+    start();
+  }
+</script>

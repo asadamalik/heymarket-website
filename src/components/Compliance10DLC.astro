@@ -14,7 +14,7 @@ const steps = [
   <div class="container-x text-center">
     <h2
       id="compliance-heading"
-      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+      class="mx-auto max-w-3xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
     >
       Register for 10DLC quickly and stay compliant
     </h2>
@@ -37,7 +37,7 @@ const steps = [
       {steps.map((s, i) => (
         <li class="relative flex flex-col items-center text-center">
           <span class="grid h-8 w-8 place-items-center rounded-full bg-yellow text-sm font-bold text-ink">{i + 1}</span>
-          <p class="mt-4 max-w-[15rem] font-bold leading-snug">{s}</p>
+          <h3 class="mt-4 max-w-[15rem] text-lg font-[800] leading-[1.2] md:text-xl">{s}</h3>
         </li>
       ))}
     </ol>
@@ -45,7 +45,7 @@ const steps = [
     <div class="mt-12">
       <a
         href="#"
-        class="inline-block rounded-lg bg-yellow px-8 py-4 text-[13px] font-bold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
+        class="inline-block rounded-lg bg-yellow px-8 py-4 text-base font-[800] uppercase leading-[18px] text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
       >Get Started</a>
     </div>
   </div>

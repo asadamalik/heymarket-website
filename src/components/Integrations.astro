@@ -1,4 +1,24 @@
 ---
+// Integration logo cluster, laid out like heymarket.com: circles of varying
+// size scattered across a 540×455 canvas. Positions/sizes are that canvas's
+// px values, converted to percentages below so the cluster scales fluidly.
+const CANVAS_W = 540;
+const CANVAS_H = 455;
+type Bubble = { name: string; slug: string; x: number; y: number; d: number; logo: number };
+const bubbles: Bubble[] = [
+  { name: "Aircall", slug: "aircall", x: 25, y: 45, d: 104, logo: 48 },
+  { name: "HubSpot", slug: "hubspot", x: 147, y: 9, d: 170, logo: 90 },
+  { name: "Zendesk", slug: "zendesk", x: 336, y: 0, d: 116, logo: 60 },
+  { name: "Microsoft Teams", slug: "msteams", x: 10, y: 166, d: 145, logo: 77 },
+  { name: "Help Scout", slug: "helpscout", x: 175, y: 197, d: 101, logo: 45 },
+  { name: "Twilio", slug: "twilio", x: 299, y: 157, d: 100, logo: 64 },
+  { name: "Zapier", slug: "zapier", x: 402, y: 110, d: 101, logo: 55 },
+  { name: "Slack", slug: "slack", x: 105, y: 309, d: 112, logo: 60 },
+  { name: "Salesforce", slug: "salesforce", x: 238, y: 284, d: 162, logo: 110 },
+  { name: "Shopify", slug: "shopify", x: 399, y: 224, d: 121, logo: 55 },
+  { name: "Clio", slug: "clio", x: 419, y: 360, d: 82, logo: 42 },
+];
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
 ---
 <section class="bg-paper py-[var(--space-section)]" aria-labelledby="integrations-heading">
   <div class="container-x">
@@ -6,17 +26,17 @@
       <div>
         <h2
           id="integrations-heading"
-          class="text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+          class="text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
         >
           Connect your CRM<br class="hidden sm:block" /> and favorite apps
         </h2>
-        <p class="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-70">
+        <p class="mt-6 max-w-xl text-base leading-6 text-ink">
           Heymarket offers built-in integrations with leading business apps and CRMs, including
-          <a href="#" class="underline decoration-ink-30 underline-offset-2 hover:decoration-ink">Salesforce</a> and HubSpot.
+          <a href="#" class="font-bold underline underline-offset-2">Salesforce</a> and HubSpot.
           Leverage existing contact databases and incorporate custom fields in messaging campaigns.
           Automatically create or update contacts and capture their actions in your system of record.
           You can also build your own integrations with Heymarket's powerful
-          <a href="#" class="underline decoration-ink-30 underline-offset-2 hover:decoration-ink">API</a>.
+          <a href="#" class="font-bold underline underline-offset-2">API</a>.
         </p>
         <a
           href="#"
@@ -29,16 +49,52 @@
         </a>
       </div>
 
-      <div class="flex justify-center md:justify-end">
-        <img
-          src="/heymarket-website/assets/mock-integrations.webp"
-          alt="Integration logos including HubSpot, Zendesk, Zapier, Microsoft Teams, Twilio, Slack, Salesforce, and Shopify."
-          width="668"
-          height="602"
-          loading="lazy"
-          class="h-auto w-full max-w-[540px]"
-        />
-      </div>
+      <ul
+        class="relative mx-auto w-full max-w-[540px] md:mr-0"
+        style={`aspect-ratio: ${CANVAS_W} / ${CANVAS_H}`}
+        aria-label="Integrations"
+      >
+        {bubbles.map((b) => (
+          <li
+            class="bubble"
+            title={b.name}
+            style={`left:${pct(b.x, CANVAS_W)};top:${pct(b.y, CANVAS_H)};width:${pct(b.d, CANVAS_W)}`}
+          >
+            <img
+              src={`/heymarket-website/assets/int-${b.slug}.webp`}
+              alt={b.name}
+              loading="lazy"
+              style={`width:${pct(b.logo, b.d)}`}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
+
+<style>
+  .bubble {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+    background: #fff;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0.12);
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s ease;
+  }
+  .bubble img { height: auto; }
+  .bubble:hover {
+    z-index: 1;
+    transform: scale(1.1);
+    box-shadow: 0 18px 36px -10px rgb(129 88 236 / 0.4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bubble { transition: none; }
+    .bubble:hover { transform: none; }
+  }
+</style>

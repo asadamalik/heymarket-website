@@ -1,50 +1,86 @@
 ---
-const features = [
+// "Reduce manual work with AI agents" — the three Heymarket AI agents.
+// Copy and icons sourced from heymarket.com.
+type Agent = { name: string; icon: string; body: string; points: string[] };
+const agents: Agent[] = [
   {
-    icon: "/heymarket-website/assets/icon-translate.webp",
-    title: "Reach more people with translation",
-    body: "Empower your team to help more people in more languages.",
+    name: "Q&A Agent",
+    icon: "/heymarket-website/assets/icon-agent-qa.svg",
+    body: "Answers FAQs instantly from your approved knowledge base. Works across all your messaging channels and gets smarter every day.",
+    points: ["Handles 200+ questions/day", "Leverages your knowledge base", "Cites every source"],
   },
   {
-    icon: "/heymarket-website/assets/icon-expand.webp",
-    title: "Refine your texts and emails in one click",
-    body: "Instantly correct, formalize, shorten and expand texts and emails to make them more effective.",
+    name: "Scheduling Agent",
+    icon: "/heymarket-website/assets/icon-agent-scheduling.svg",
+    body: "Books, reschedules, and cancels appointments via text. Detects intent, presents available slots, and sends confirmations automatically.",
+    points: ["Books across any channel", "Handles cancellations & reschedules", "Sends calendar confirmations"],
   },
   {
-    icon: "/heymarket-website/assets/icon-suggested.webp",
-    title: "Give quick, contextual answers",
-    body: "Upload your knowledge base to generate hyper-personalized messages.",
+    name: "Lead Enrichment Agent",
+    icon: "/heymarket-website/assets/icon-agent-enrichment.svg",
+    body: "Extracts and enriches lead data from every conversation — name, company, intent, budget, timeline — and syncs it to your CRM.",
+    points: ["Auto-fills CRM fields", "Detects intent and extracts data", "Tags and scores leads"],
   },
 ];
 ---
-<section class="bg-purple py-[var(--space-section)] text-paper" aria-labelledby="ai-heading">
+<section class="ai-section py-[var(--space-section)] text-paper" aria-labelledby="ai-heading">
   <div class="container-x text-center">
-    <svg viewBox="0 0 24 24" class="mx-auto h-9 w-9 text-paper" fill="currentColor" aria-hidden="true">
-      <path d="M12 2l1.7 6.8L20 10l-6.3 1.2L12 18l-1.7-6.8L4 10l6.3-1.2z" />
-      <path d="M19 3l.7 2.6L22 6l-2.3.4L19 9l-.7-2.6L16 6l2.3-.4z" opacity="0.8" />
-    </svg>
     <h2
       id="ai-heading"
-      class="mx-auto mt-5 max-w-4xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)] tracking-[-0.01em]"
+      class="mx-auto max-w-4xl text-[length:var(--text-h2)] font-[800] leading-[var(--text-h2--line-height)]"
     >
-      Extend your reach with AI-assisted texting and email
+      Reduce manual work with AI agents
     </h2>
+    <p class="mx-auto mt-5 max-w-3xl text-base leading-6 text-paper">
+      Our specialized agents work alongside your team in your shared inbox to speed up response
+      times, schedule meetings, and enrich data to reduce manual work.
+    </p>
 
-    <div class="mt-14 grid gap-10 text-left sm:grid-cols-3 sm:gap-8">
-      {features.map((f) => (
-        <div>
-          <img src={f.icon} alt="" width="56" height="56" class="h-12 w-12" />
-          <h3 class="mt-4 text-lg font-bold leading-snug">{f.title}</h3>
-          <p class="mt-2 text-[15px] leading-relaxed text-paper/85">{f.body}</p>
-        </div>
+    <div class="mx-auto mt-14 grid max-w-[1120px] gap-10 text-left md:grid-cols-3 md:gap-8">
+      {agents.map((a) => (
+        <article class="agent-card">
+          <img src={a.icon} alt="" width="84" height="44" class="h-11 w-auto" />
+          <h3 class="mt-5 text-lg font-[800] leading-[1.2] md:text-xl text-blue">{a.name}</h3>
+          <p class="mt-3 text-base leading-6 text-ink">{a.body}</p>
+          <ul class="mt-5 space-y-2">
+            {a.points.map((p) => (
+              <li class="flex gap-2.5 text-[14px] font-semibold leading-[21px] text-ink">
+                <span class="agent-dot" aria-hidden="true"></span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </article>
       ))}
     </div>
 
-    <div class="mt-12">
+    <div class="mt-16">
       <a
         href="#"
-        class="inline-block rounded-lg bg-green px-7 py-4 text-[13px] font-bold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:brightness-95"
-      >Try our AI features</a>
+        class="inline-block rounded-lg bg-green px-7 py-4 text-base font-[800] uppercase leading-[18px] text-ink transition-transform hover:-translate-y-0.5 hover:brightness-95"
+      >Explore all AI agents</a>
     </div>
   </div>
 </section>
+
+<style>
+  .ai-section {
+    background-image: linear-gradient(100deg, #000 0%, var(--color-blue) 92%);
+  }
+  .agent-card {
+    background: #fff;
+    border: 1px solid #000;
+    /* Speech-bubble shape: one tight corner, matching heymarket.com. */
+    border-radius: 40px 40px 8px 40px;
+    padding: 3.5rem 2rem 2rem;
+    box-shadow: 10px 10px 0 0 var(--color-purple);
+  }
+  .agent-dot {
+    flex-shrink: 0;
+    margin-top: 0.45em;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--color-purple);
+  }
+</style>

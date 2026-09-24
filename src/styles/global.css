@@ -72,10 +72,10 @@
   /* Fluid type scale */
   --text-hero: clamp(2.5rem, 1.2rem + 5.4vw, 4rem); /* ~64px */
   --text-hero--line-height: 1.05;
-  --text-h2: clamp(1.9rem, 1.1rem + 3.2vw, 2.5rem); /* ~40px */
-  --text-h2--line-height: 1.15;
+  --text-h2: clamp(2rem, 1.1rem + 3.2vw, 2.5rem); /* ~40px */
+  --text-h2--line-height: 1.2;
   --text-h3: clamp(1.5rem, 1rem + 2vw, 2rem); /* ~32px */
-  --text-h3--line-height: 1.18;
+  --text-h3--line-height: 1.2;
   --text-lead: clamp(1.05rem, 0.98rem + 0.4vw, 1.25rem); /* ~20px */
   --text-lead--line-height: 1.45;
 
