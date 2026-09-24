@@ -1,27 +1,70 @@
 ---
+// Testimonials from heymarket.com (same order). The first is active on load.
 const items = [
   {
-    featured: false,
-    title: "The best tool for team messaging",
-    body: "You can reach out to potential new contacts, and it has all the bells and whistles over the competitors. With one account, you can set up templates and automations. We haven't had any issues training our team and they're really receptive to feedback about the product.",
-    author: "M. Rivera",
-    role: "Operations",
-  },
-  {
     featured: true,
-    title: "Awesome App with tons of features and support",
-    body: "Heymarket is the perfect app to compliment our business. Took our business to the next level and we now can't see ourselves without it. Our clients have another method of reaching us, it's fast, intuitive, and has a load of features (templates, campaigns, automations) available.",
-    author: "Z. Alyasiry",
+    title: "Couldn't recommend highly enough",
+    body: "Heymarket has been a game-changer for our business and is so much easier to use than other texting platforms we've tried. The Salesforce integration is very easy to use. Heymarket's integration and automation has allowed us to do things we didn't even know were possible.",
+    author: "A. Farnsworth",
     role: "",
   },
   {
     featured: false,
-    title: "Amazing support and service",
-    body: "I had a fantastic experience with Heymarket. The platform is simply outstanding and top notch, and I wholeheartedly recommend it as a business messaging solution.",
+    title: "Heymarket is THE business messaging solution",
+    body: "We are able to get clients answers in an expedited manner, increasing our customer experience as a whole. Highly recommend over other business messaging applications that integrate with HubSpot.",
+    author: "A. Ravenelle",
+    role: "",
+  },
+  {
+    featured: false,
+    title: "Amazing software and even better client support",
+    body: "Huge fan of Heymarket and the entire integration with Salesforce. The software itself is great but attaching it to salesforce with the ease and professional client relationship, it's a tool we will continue to use and grow with.",
+    author: "S. Taver",
+    role: "",
+  },
+  {
+    featured: false,
+    title: "Best SMS tool on the market",
+    body: "Heymarket has been a fantastic tool for our business. It's like having a team wide email inbox for managing SMS comms with users and customers. Today we are successfully managing our entire SMS channel through Heymarket!",
+    author: "M. Heard",
+    role: "",
+  },
+  {
+    featured: false,
+    title: "Great automation and support!",
+    body: "Heymarket’s HubSpot integration works really well and allows us to automate a lot of things for our sales team (and sales teams always need easy and automated things, right?). Plus, the technical support is awesome!",
+    author: "A. DiSalvo",
+    role: "",
+  },
+  {
+    featured: false,
+    title: "Best SMS integration",
+    body: "Heymarket allowed us to integrate with various platforms (Apple Messaging, SMS, Facebook and Slack) and bring all of that communications into HubSpot. It allows us to have two way communication and storing all of the communication in a single place.",
+    author: "S. Pinnaka",
+    role: "Technology",
+  },
+  {
+    featured: false,
+    title: "Great customer service and easy to use",
+    body: "This app was very easy to set up with clear instructions and our users are pleased with their visibility into messaging and the speed. Customer service was excellent and very responsive to questions during and after setup.",
+    author: "L. Finkelstein",
+    role: "",
+  },
+  {
+    featured: false,
+    title: "Amazing support and features",
+    body: "I had a fantastic experience with Heymarket from start to finish. The team at Heymarket is simply outstanding and always ready to assist. Their service is top-notch, and I wholeheartedly recommend it to anyone in need of an SMS integration solution.",
     author: "T. Clarkson",
     role: "Healthcare",
   },
 ];
+
+// Render the set three times (copy | real | copy) so the washed-out
+// neighbours wrap around: the last card sits left of the first, and the first
+// sits right of the last. The script quietly re-centres onto the real copy.
+const COPIES = 3;
+const REAL_COPY = 1;
+const slides = Array.from({ length: COPIES }, (_, copy) => items.map((t, i) => ({ t, i, copy }))).flat();
 ---
 <section class="overflow-hidden bg-beige py-[var(--space-section)]" aria-labelledby="testimonials-heading">
   <div class="container-x text-center">
@@ -40,12 +83,20 @@ const items = [
   <div class="mt-12">
     <div
       id="testimonial-carousel"
-      class="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-[max(1.5rem,calc((100%-760px)/2))] pb-4 [-ms-overflow-style:none] [scrollbar-width:none]"
+      class="flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100%-760px)/2))] pb-4 [-ms-overflow-style:none] [scrollbar-width:none]"
+      aria-roledescription="carousel"
+      aria-label="Customer testimonials"
+      data-count={items.length}
     >
-      {items.map((t) => (
+      {slides.map(({ t, i, copy }) => (
         <div
-          data-featured={t.featured ? "" : null}
-          class={`flex min-w-[min(760px,85vw)] snap-center flex-col text-left ${t.featured ? "" : "opacity-40"}`}
+          class="testi-slide flex min-w-[min(760px,85vw)] snap-center flex-col text-left"
+          data-index={i}
+          data-active={copy === REAL_COPY && t.featured ? "" : null}
+          aria-hidden={copy === REAL_COPY ? null : "true"}
+          inert={copy !== REAL_COPY}
+          aria-roledescription={copy === REAL_COPY ? "slide" : null}
+          aria-label={copy === REAL_COPY ? `${i + 1} of ${items.length}` : null}
         >
           <article class="testi-card flex flex-1 flex-col bg-blue-70 p-8 text-paper sm:p-10">
             <div class="flex gap-1">
@@ -64,25 +115,141 @@ const items = [
       ))}
     </div>
 
-    <div class="mt-8 flex justify-center gap-2" aria-hidden="true">
-      <span class="h-2 w-2 rounded-full bg-ink/25"></span>
-      <span class="h-2 w-6 rounded-full bg-ink"></span>
-      <span class="h-2 w-2 rounded-full bg-ink/25"></span>
+    <div class="mt-8 flex justify-center gap-2">
+      {items.map((t, i) => (
+        <button
+          type="button"
+          class="testi-dot"
+          data-index={i}
+          aria-label={`Show testimonial ${i + 1}: ${t.author}`}
+          aria-current={t.featured ? "true" : "false"}
+        ></button>
+      ))}
     </div>
   </div>
 </section>
 
 <script>
-  // Center the featured testimonial on load (no animation).
+  // Auto-rotating, infinitely looping testimonial carousel. Slides are rendered
+  // as three copies (copy | real | copy). The centred slide is "active" (full
+  // colour) and its neighbours are washed out. Whenever the carousel settles on
+  // a copy, it jumps invisibly to the same card in the real set, so the
+  // neighbours always wrap: the last card is left of the first, the first is
+  // right of the last. Rotation pauses on hover/touch/focus and off-screen.
+  const ROTATE_MS = 5000;
+
   const car = document.getElementById("testimonial-carousel");
-  const feat = car?.querySelector<HTMLElement>("[data-featured]");
-  if (car && feat) {
-    const centre = feat.offsetLeft - (car.clientWidth - feat.clientWidth) / 2;
-    car.scrollLeft = Math.max(0, centre);
+  const slides = car ? Array.from(car.querySelectorAll<HTMLElement>(".testi-slide")) : [];
+  const dots = Array.from(document.querySelectorAll<HTMLButtonElement>(".testi-dot"));
+  const n = Number(car?.dataset.count || 0);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (car && n && slides.length === n * 3) {
+    let active = Math.max(n, slides.findIndex((s) => s.hasAttribute("data-active")));
+    let timer: number | undefined;
+    let paused = false;
+    let visible = false;
+
+    const setActive = (i: number) => {
+      active = i;
+      slides.forEach((s, k) => s.toggleAttribute("data-active", k === i));
+      dots.forEach((d, k) => d.setAttribute("aria-current", k === i % n ? "true" : "false"));
+    };
+
+    // scrollLeft that puts slide i in the horizontal centre of the carousel.
+    const centreOf = (i: number) => {
+      const c = car.getBoundingClientRect();
+      const r = slides[i].getBoundingClientRect();
+      return car.scrollLeft + (r.left - c.left) - (c.width - r.width) / 2;
+    };
+
+    const goTo = (i: number, animate = true) => {
+      setActive(i);
+      car.scrollTo({ left: centreOf(i), behavior: animate && !reduce ? "smooth" : "auto" });
+    };
+
+    // If we are sitting on a copy, swap to the identical real slide with no
+    // visible change (transitions are suspended for that frame).
+    const normalize = () => {
+      if (active >= n && active < 2 * n) return;
+      const target = n + (active % n);
+      car.classList.add("is-jumping");
+      setActive(target);
+      car.scrollTo({ left: centreOf(target), behavior: "auto" });
+      requestAnimationFrame(() => requestAnimationFrame(() => car.classList.remove("is-jumping")));
+    };
+
+    const stop = () => { if (timer) { window.clearInterval(timer); timer = undefined; } };
+    const start = () => {
+      stop();
+      if (reduce || paused || !visible) return;
+      timer = window.setInterval(() => goTo(active + 1), ROTATE_MS);
+    };
+
+    // After any scroll settles (swipe, trackpad, programmatic), the slide
+    // nearest the centre becomes active, then we re-centre onto the real set.
+    let settle: number | undefined;
+    car.addEventListener("scroll", () => {
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        const mid = car.getBoundingClientRect().left + car.clientWidth / 2;
+        let best = active, bestDist = Infinity;
+        slides.forEach((s, k) => {
+          const r = s.getBoundingClientRect();
+          const d = Math.abs(r.left + r.width / 2 - mid);
+          if (d < bestDist) { bestDist = d; best = k; }
+        });
+        if (best !== active) setActive(best);
+        normalize();
+      }, 120);
+    }, { passive: true });
+
+    dots.forEach((d) => d.addEventListener("click", () => { goTo(n + Number(d.dataset.index)); start(); }));
+
+    const pause = () => { paused = true; stop(); };
+    const resume = () => { paused = false; start(); };
+    car.addEventListener("mouseenter", pause);
+    car.addEventListener("mouseleave", resume);
+    car.addEventListener("focusin", pause);
+    car.addEventListener("focusout", resume);
+    car.addEventListener("touchstart", pause, { passive: true });
+    car.addEventListener("touchend", () => window.setTimeout(resume, 2000), { passive: true });
+
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; start(); }, { threshold: 0.3 }).observe(car);
+
+    // Keep the active slide centred if the viewport width changes.
+    window.addEventListener("resize", () => car.scrollTo({ left: centreOf(active), behavior: "auto" }));
+
+    goTo(active, false); // centre the initial slide instantly
   }
 </script>
 
 <style>
   /* Speech-bubble card, matching heymarket.com (tight bottom-left corner). */
   .testi-card { border-radius: 40px 40px 40px 8px; }
+
+  /* Non-active slides are washed out; the active one is full colour. */
+  .testi-slide {
+    opacity: 0.4;
+    transition: opacity 0.45s ease;
+  }
+  .testi-slide[data-active] { opacity: 1; }
+  .is-jumping .testi-slide { transition: none; }
+
+  .testi-dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    border-radius: 9999px;
+    background: rgb(0 0 0 / 0.25);
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+  .testi-dot[aria-current="true"] {
+    width: 1.5rem;
+    background: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .testi-slide,
+    .testi-dot { transition: none; }
+  }
 </style>
