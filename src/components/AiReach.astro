@@ -1,23 +1,30 @@
 ---
 // "Reduce manual work with AI agents" — the three Heymarket AI agents.
 // Copy and icons sourced from heymarket.com.
-type Agent = { name: string; icon: string; body: string; points: string[] };
+type Agent = { name: string; icon: string; iconW: number; iconH: number; iconPad?: boolean; body: string; points: string[] };
 const agents: Agent[] = [
   {
     name: "Q&A Agent",
     icon: "/heymarket-website/assets/icon-agent-qa.svg",
+    iconW: 84,
+    iconH: 44,
+    iconPad: true, // artwork runs edge-to-edge; inset it within the 60px box
     body: "Answers FAQs instantly from your approved knowledge base. Works across all your messaging channels and gets smarter every day.",
     points: ["Handles 200+ questions/day", "Leverages your knowledge base", "Cites every source"],
   },
   {
     name: "Scheduling Agent",
     icon: "/heymarket-website/assets/icon-agent-scheduling.svg",
+    iconW: 85,
+    iconH: 85,
     body: "Books, reschedules, and cancels appointments via text. Detects intent, presents available slots, and sends confirmations automatically.",
     points: ["Books across any channel", "Handles cancellations & reschedules", "Sends calendar confirmations"],
   },
   {
     name: "Lead Enrichment Agent",
     icon: "/heymarket-website/assets/icon-agent-enrichment.svg",
+    iconW: 63,
+    iconH: 66,
     body: "Extracts and enriches lead data from every conversation — name, company, intent, budget, timeline — and syncs it to your CRM.",
     points: ["Auto-fills CRM fields", "Detects intent and extracts data", "Tags and scores leads"],
   },
@@ -39,7 +46,7 @@ const agents: Agent[] = [
     <div class="mx-auto mt-14 grid max-w-[1120px] gap-10 text-left md:grid-cols-3 md:gap-8">
       {agents.map((a) => (
         <article class="agent-card">
-          <img src={a.icon} alt="" width="84" height="44" class="h-11 w-auto" />
+          <img src={a.icon} alt="" width={a.iconW} height={a.iconH} class={`h-[60px] w-auto ${a.iconPad ? "py-[5px]" : ""}`} />
           <h3 class="mt-5 text-lg font-[800] leading-[1.2] md:text-xl text-blue">{a.name}</h3>
           <p class="mt-3 text-base leading-6 text-ink">{a.body}</p>
           <ul class="mt-5 space-y-2">
