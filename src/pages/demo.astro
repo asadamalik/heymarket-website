@@ -30,8 +30,8 @@ const badges = [
   { src: `${A}/g2-high-performer.svg`, alt: "G2 High Performer, Enterprise, Winter 2025" },
 ];
 
-// Same set as the heymarket.com homepage. All five show at every width; on narrow
-// screens they shrink together (flex-basis ∝ aspect ratio) to stay on one row.
+// Same set as the heymarket.com homepage. Phones: 3 on the first row, 2 on the
+// second. From 768px (tablet) up: one row.
 const logos = [
   { src: `${A}/demo-logo-kisco.webp`, alt: "KISCO Senior Living", w: 283 },
   { src: `${A}/demo-logo-uhaul.webp`, alt: "U-Haul", w: 231 },
@@ -151,11 +151,14 @@ const stories: Story[] = [
 
     <!-- Customer logos: one row at every width -->
     <section class="py-12" aria-label="Customers">
-      <ul class="bs flex items-center justify-center gap-3 [--lh:31px] bs-sm:gap-4 bs-sm:[--lh:49px] md:[--lh:clamp(57px,calc(7.56vw-1px),70px)] bs-lg:gap-[30px] bs-lg:[--lh:70px] bs-xl:justify-between bs-xl:px-[61px]">
-        {logos.map((l) => (
-          <li class="min-w-0" style={`flex: 0 1 calc(var(--lh) * ${(l.w / 140).toFixed(4)})`}>
-            <img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-auto w-full" />
-          </li>
+      <ul class="bs flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:flex-nowrap md:gap-4 bs-lg:gap-[30px] bs-xl:justify-between bs-xl:px-[61px]">
+        {logos.map((l, i) => (
+          <>
+            <li>
+              <img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-10 w-auto max-w-none bs-sm:h-[49px] md:h-[clamp(57px,calc(7.56vw-1px),70px)] bs-lg:h-[70px]" />
+            </li>
+            {i === 2 && <li class="h-0 basis-full md:hidden" aria-hidden="true"></li>}
+          </>
         ))}
       </ul>
     </section>
