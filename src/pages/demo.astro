@@ -1,6 +1,8 @@
 ---
 // /demo — clone of heymarket.com/demo ("See Heymarket in action").
-// Copy, imagery, and measurements sourced from heymarket.com/demo.
+// Copy, imagery, and measurements sourced from heymarket.com/demo, including
+// its responsive behaviour (Bootstrap breakpoints 576/768/992/1200 → Tailwind
+// sm/md/lg/xl).
 // NOTE: the booking form is not wired to HubSpot / the scheduler; it validates
 // locally and shows a preview notice instead of submitting anywhere.
 import Base from "../layouts/Base.astro";
@@ -13,11 +15,12 @@ const avatars = [
   { src: `${A}/demo-avatar-josh.webp`, alt: "Josh, Heymarket product specialist" },
 ];
 
-const checks = [
-  "Tell us about your messaging needs",
-  "Get expert recommendations on features",
-  "Based on your use case, see a live demo on the spot\nor get set up with a specialized live demo",
-  "See AI agents expediting SMS and email conversations",
+// [line 1, optional line 2]: line 2 starts on a new line from 992px only.
+const checks: [string, string?][] = [
+  ["Tell us about your messaging needs"],
+  ["Get expert recommendations on features"],
+  ["Based on your use case, see a live demo on the spot", "or get set up with a specialized live demo"],
+  ["See AI agents expediting SMS and email conversations"],
 ];
 
 const badges = [
@@ -27,12 +30,14 @@ const badges = [
   { src: `${A}/g2-high-performer.svg`, alt: "G2 High Performer, Enterprise, Winter 2025" },
 ];
 
+// Same set as the heymarket.com homepage. `wide` = only shown from 1200px,
+// mirroring the live site, which drops one logo below that width.
 const logos = [
-  { src: `${A}/demo-logo-kisco.webp`, alt: "KISCO Senior Living", w: 283 },
-  { src: `${A}/demo-logo-uhaul.webp`, alt: "U-Haul", w: 231 },
-  { src: `${A}/demo-logo-cornell.webp`, alt: "Cornell University", w: 401 },
-  { src: `${A}/demo-logo-methodology.webp`, alt: "Methodology", w: 276 },
-  { src: `${A}/demo-logo-budget.webp`, alt: "Budget Dumpster", w: 400 },
+  { src: `${A}/demo-logo-kisco.webp`, alt: "KISCO Senior Living", w: 283, wide: false },
+  { src: `${A}/demo-logo-uhaul.webp`, alt: "U-Haul", w: 231, wide: false },
+  { src: `${A}/demo-logo-crst.webp`, alt: "CRST", w: 183, wide: false },
+  { src: `${A}/demo-logo-methodology.webp`, alt: "Methodology", w: 276, wide: true },
+  { src: `${A}/demo-logo-weyerhaeuser.webp`, alt: "Weyerhaeuser", w: 472, wide: false },
 ];
 
 type Story = {
@@ -64,50 +69,63 @@ const stories: Story[] = [
   title="Heymarket Demo | Try Business Text Messaging Software"
   description="See Heymarket in action. Book a free time slot for a live demo of shared inboxes and AI agents for SMS and email."
 >
-  <!-- Minimal header: logo + Sign In -->
-  <header class="bg-paper">
-    <div class="mx-auto flex h-[70px] max-w-[1210px] items-center justify-between px-5">
-    <a href={import.meta.env.BASE_URL} aria-label="Heymarket home">
-      <img src={`${A}/heymarket-logo-black.svg`} alt="Heymarket" width="149" height="33" class="h-[33px] w-auto" />
-    </a>
-    <a href="https://app.heymarket.com/account/login" class="text-base font-medium leading-[18px] text-ink hover:underline">Sign In</a>
+  <!-- Header: logo + Sign In (hamburger menu below 992px, like the live site) -->
+  <header class="relative bg-paper">
+    <div class="mx-auto flex h-[60px] max-w-[1210px] bs-lg:h-[70px] items-center justify-between px-[15px] bs-lg:px-5">
+      <a href={import.meta.env.BASE_URL} aria-label="Heymarket home">
+        <img src={`${A}/heymarket-logo-black.svg`} alt="Heymarket" width="149" height="33" class="h-7 w-auto bs-lg:h-[33px]" />
+      </a>
+      <a href="https://app.heymarket.com/account/login" class="hidden text-base font-medium leading-[18px] text-ink hover:underline bs-lg:inline">Sign In</a>
+      <button
+        type="button"
+        class="demo-burger grid h-10 w-10 place-items-center text-purple bs-lg:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="demo-menu"
+      >
+        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" />
+        </svg>
+      </button>
     </div>
+    <nav id="demo-menu" class="absolute inset-x-0 top-full z-20 hidden border-t border-black/10 bg-paper px-[15px] py-4 shadow-lg bs-lg:hidden" aria-label="Account">
+      <a href="https://app.heymarket.com/account/login" class="block py-2 text-base font-medium text-ink">Sign In</a>
+    </nav>
   </header>
 
   <main>
-    <!-- Hero: pitch + booking form -->
-    <section class="demo-hero bg-purple py-16 text-paper" aria-labelledby="demo-heading">
-      <div class="mx-auto grid max-w-[1110px] gap-10 px-5 lg:grid-cols-2 lg:gap-[30px] lg:px-0">
+    <!-- Hero: pitch + booking form (stacked below 992px) -->
+    <section class="demo-hero bg-purple pb-[90px] pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
+      <div class="bs grid gap-8 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
         <div>
           <p class="text-lg font-bold uppercase leading-[26px]">See Heymarket in action</p>
           <div class="mt-4 flex gap-2.5">
             {avatars.map((a) => (
-              <img src={a.src} alt={a.alt} width="75" height="75" class="h-[75px] w-[75px] rounded-full object-cover" />
+              <img src={a.src} alt={a.alt} width="75" height="75" class="h-[60px] w-[60px] rounded-full object-cover bs-lg:h-[75px] bs-lg:w-[75px]" />
             ))}
           </div>
-          <h1 id="demo-heading" class="mt-4 text-[clamp(2.5rem,1.6rem+3vw,3.5rem)] font-[800] leading-[1.2]">
-            All your messages, one shared inbox
-          </h1>
+          <h1 id="demo-heading" class="demo-h1 mt-4 font-[800]">All your messages, one shared inbox</h1>
           <ul class="mt-4 space-y-2">
-            {checks.map((c) => (
-              <li class="relative whitespace-pre-line pl-8 text-base font-semibold leading-6">
-                <svg viewBox="0 0 24 24" class="absolute left-0 top-0.5 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            {checks.map(([line1, line2]) => (
+              <li class="relative pl-8 text-base font-semibold leading-5 md:leading-6">
+                <svg viewBox="0 0 24 24" class="absolute left-0 top-0 h-5 w-5 md:top-0.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                {c}
+                {line1}
+                {line2 && <> <br class="hidden bs-lg:inline" />{line2}</>}
               </li>
             ))}
           </ul>
-          <ul class="mt-10 flex flex-wrap gap-4" aria-label="G2 awards">
+          <ul class="mt-10 flex gap-4" aria-label="G2 awards">
             {badges.map((b) => (
-              <li><img src={b.src} alt={b.alt} width="89" height="116" class="h-[116px] w-[89px]" /></li>
+              <li class="g2-badge"><img src={b.src} alt={b.alt} width="89" height="116" class="h-auto w-full" /></li>
             ))}
           </ul>
         </div>
 
-        <div class="lg:pt-0">
-          <form id="book-demo" class="demo-form rounded-3xl border border-ink bg-paper p-10 text-ink" novalidate>
-            <h2 class="text-center text-[length:var(--text-h3)] font-[800] leading-[1.2]">Book a free time slot</h2>
+        <div>
+          <form id="book-demo" class="demo-form mx-auto rounded-3xl border border-ink bg-paper p-8 text-ink md:max-w-[580px] bs-lg:max-w-none bs-lg:p-10" novalidate>
+            <h2 class="fs-24-32 text-center font-[800] leading-[1.2]">Book a free time slot</h2>
             <label for="demo-email" class="mt-[34px] block text-sm font-semibold leading-[18px] text-ink-70">
               Business email<span class="text-[#f2545b]">*</span>
             </label>
@@ -131,26 +149,28 @@ const stories: Story[] = [
       </div>
     </section>
 
-    <!-- Customer logos -->
+    <!-- Customer logos: one row at every width -->
     <section class="py-12" aria-label="Customers">
-      <ul class="mx-auto flex max-w-[1110px] flex-wrap items-center justify-center gap-x-12 gap-y-6 px-5 lg:justify-between lg:px-[46px]">
+      <ul class="bs flex items-center justify-center gap-4 bs-lg:gap-[30px] bs-xl:justify-between bs-xl:px-[61px]">
         {logos.map((l) => (
-          <li><img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-[50px] w-auto lg:h-[70px]" /></li>
+          <li class={l.wide ? "hidden bs-xl:block" : ""}>
+            <img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-[31px] w-auto max-w-none bs-sm:h-[49px] md:h-[clamp(57px,calc(7.56vw-1px),70px)] bs-lg:h-[70px]" />
+          </li>
         ))}
       </ul>
     </section>
 
-    <!-- Proof: U-Haul stat + quote -->
+    <!-- Proof: U-Haul stat + quote (centred and stacked below 992px) -->
     <section class="bg-[#e1d7fb] py-[60px]" aria-label="Customer result">
-      <div class="mx-auto max-w-[1110px] px-5 lg:px-0">
-        <figure class="grid items-center gap-8 rounded-[40px] bg-paper p-8 shadow-[0_16px_50px_0_rgba(0,0,0,0.1)] sm:p-[60px] md:grid-cols-[225px_1fr] md:gap-12">
+      <div class="bs">
+        <figure class="grid items-center gap-8 rounded-[40px] bg-paper px-5 py-10 text-center shadow-[0_16px_50px_0_rgba(0,0,0,0.1)] md:p-10 bs-lg:grid-cols-[225px_1fr] bs-lg:gap-12 bs-lg:p-[60px] bs-lg:text-left">
           <div class="text-center">
-            <p class="text-[clamp(4rem,2.5rem+4vw,6.25rem)] font-[800] leading-none text-blue">60%</p>
+            <p class="text-[100px] font-[800] leading-none text-blue">60%</p>
             <p class="mt-2 text-lg font-semibold leading-[27px]">response rate achieved</p>
           </div>
           <div>
-            <img src={`${A}/demo-quote-uhaul.webp`} alt="U-Haul" width="115" height="66" class="h-auto w-[115px]" />
-            <blockquote class="mt-2 text-[clamp(1.5rem,1.2rem+1vw,2rem)] font-semibold leading-[1.2]">
+            <img src={`${A}/demo-quote-uhaul.webp`} alt="U-Haul" width="115" height="66" class="mx-auto h-auto w-[115px] bs-lg:mx-0" />
+            <blockquote class="fs-24-32 mt-2 font-semibold leading-[1.2]">
               “Heymarket’s Salesforce SMS integration makes messaging leads and customers a
               <span class="text-blue">smooth experience</span> for our agents.”
             </blockquote>
@@ -159,18 +179,18 @@ const stories: Story[] = [
       </div>
     </section>
 
-    <!-- Customer stories -->
+    <!-- Customer stories (stacked below 992px; 30px kept free on the right for the label tabs) -->
     <section class="bg-beige py-[50px]" aria-labelledby="stories-heading">
-      <div class="mx-auto max-w-[1110px] px-5 lg:px-0">
-        <h2 id="stories-heading" class="mx-auto max-w-[900px] text-center text-[length:var(--text-h3)] font-[800] leading-[1.2]">
+      <div class="bs">
+        <h2 id="stories-heading" class="fs-24-32 text-center font-[800] leading-[1.2]">
           In the meantime, check out how some of our customers are connecting with their customers with Heymarket
         </h2>
-        <div class="mt-10 grid gap-12 md:grid-cols-3 md:gap-[30px] lg:gap-[60px]">
+        <div class="mt-10 grid gap-[30px] pr-[30px] bs-lg:grid-cols-3 bs-lg:gap-[60px]">
           {stories.map((s) => (
             <article class="story-card relative flex flex-col bg-paper px-8 pb-16 pt-[58px]">
               <span class="story-tag" style={`background:${s.tagBg}`}>{s.tag}</span>
               <img src={s.logo} alt={s.logoAlt} width={s.logoW} height={s.logoH} class="h-auto self-start" style={`width:${s.logoW}px`} />
-              <p class="mt-4 text-[56px] font-[800] leading-[1.2]" style={`color:${s.statColor}`}>{s.stat}</p>
+              <p class="fs-40-56 mt-4 font-[800] leading-[1.2]" style={`color:${s.statColor}`}>{s.stat}</p>
               <p class="mt-1 text-base font-semibold leading-6">{s.label}</p>
               <p class="mt-4 flex-1 text-base leading-6">“{s.quote}”</p>
               <a href="#" class="group mt-8 inline-flex items-center gap-1 text-base font-semibold leading-6 text-blue">
@@ -187,7 +207,7 @@ const stories: Story[] = [
 
     <!-- CTA -->
     <section class="bg-purple py-20 text-center text-paper" aria-labelledby="demo-cta-heading">
-      <h2 id="demo-cta-heading" class="px-5 text-[length:var(--text-h2)] font-[800] leading-[1.2]">Grow connections and conversions</h2>
+      <h2 id="demo-cta-heading" class="bs fs-32-40 font-[800] leading-[1.2]">Grow connections and conversions</h2>
       <a
         href="#book-demo"
         class="mt-8 inline-block rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[18px] text-ink transition hover:brightness-95"
@@ -195,19 +215,19 @@ const stories: Story[] = [
     </section>
   </main>
 
-  <!-- Minimal footer -->
+  <!-- Footer: stacked on phones, two rows on tablets, one row from 992px -->
   <footer class="bg-ink p-6 text-base leading-6 text-[#b3b3b3]">
-    <div class="mx-auto flex max-w-[1110px] flex-wrap items-center justify-center gap-x-16 gap-y-3">
-      <div class="flex gap-6">
+    <div class="mx-auto flex max-w-[1110px] flex-col items-center gap-3 text-center md:flex-row md:flex-wrap md:justify-center md:gap-x-16 bs-lg:flex-nowrap bs-lg:justify-between">
+      <div class="flex flex-col gap-3 md:flex-row md:gap-6">
         <a href="https://www.heymarket.com/tos/" class="hover:text-paper">Terms of Service</a>
         <a href="https://www.heymarket.com/privacy/" class="hover:text-paper">Privacy Policy</a>
       </div>
-      <p>© {new Date().getFullYear()} Common Sun, Inc.</p>
-      <div class="flex gap-6">
-        <a href="sms:+14155620500" class="inline-flex items-center gap-2 hover:text-paper">
+      <p class="md:order-last md:w-full bs-lg:order-none bs-lg:w-auto">© {new Date().getFullYear()} Common Sun, Inc.</p>
+      <div class="flex flex-col items-center gap-3 md:flex-row md:gap-6">
+        <a href="sms:+14155620500" class="inline-flex items-center gap-2 whitespace-nowrap hover:text-paper">
           <img src={`${A}/demo-footer-chat.svg`} alt="" width="23" height="17" /> (415) 562-0500
         </a>
-        <a href="mailto:sales@heymarket.com" class="inline-flex items-center gap-2 hover:text-paper">
+        <a href="mailto:sales@heymarket.com" class="inline-flex items-center gap-2 whitespace-nowrap hover:text-paper">
           <img src={`${A}/demo-footer-email.svg`} alt="" width="24" height="24" /> sales@heymarket.com
         </a>
       </div>
@@ -216,10 +236,33 @@ const stories: Story[] = [
 </Base>
 
 <style>
-  /* Big rounded hero: 140px corners except a tight bottom-right, like the site. */
-  .demo-hero {
-    border-radius: clamp(40px, 10vw, 140px) clamp(40px, 10vw, 140px) 10px clamp(40px, 10vw, 140px);
+  /* Bootstrap-equivalent container, matching heymarket.com's breakpoints. */
+  .bs { width: 100%; margin-inline: auto; padding-inline: 15px; }
+  @media (min-width: 575px) { .bs { max-width: 540px; } }
+  @media (min-width: 768px) { .bs { max-width: 720px; } }
+  @media (min-width: 992px) { .bs { max-width: 1028px; } }
+  @media (min-width: 1200px) { .bs { max-width: 1140px; } }
+
+  /* Fluid type, fitted to the live site's sizes at 375px and 1200px. */
+  .fs-24-32 { font-size: clamp(1.5rem, 1.2727rem + 0.9697vw, 2rem); }
+  .fs-32-40 { font-size: clamp(2rem, 1.7727rem + 0.9697vw, 2.5rem); }
+  .fs-40-56 { font-size: clamp(2.5rem, 2.0455rem + 1.9394vw, 3.5rem); }
+  .demo-h1 { font-size: 2rem; line-height: 1.25; }
+  @media (min-width: 992px) {
+    .demo-h1 { font-size: clamp(2.5rem, 2.0455rem + 1.9394vw, 3.5rem); line-height: 1.2; }
   }
+
+  /* Hero corners: square top + 60px bottom-left on mobile, 100px at 992, 140px at 1200. */
+  .demo-hero { border-radius: 0 0 10px 60px; }
+  @media (min-width: 992px) { .demo-hero { border-radius: 100px 100px 10px 100px; } }
+  @media (min-width: 1200px) { .demo-hero { border-radius: 140px 140px 10px 140px; } }
+
+  /* G2 badges stay on one row and step in size like the live site. */
+  .g2-badge { flex: 0 1 74px; }
+  @media (min-width: 575px) { .g2-badge { flex-basis: 84px; } }
+  @media (min-width: 768px) { .g2-badge { flex-basis: 116px; } }
+  @media (min-width: 992px) { .g2-badge { flex-basis: 16.3%; } }
+
   /* Speech-bubble story card with a tab label hanging off its top-right. */
   .story-card {
     border-radius: 40px 40px 8px 40px;
@@ -239,12 +282,19 @@ const stories: Story[] = [
     text-transform: uppercase;
     color: var(--color-ink-70);
   }
-  @media (max-width: 767px) {
-    .story-tag { right: 16px; width: auto; }
-  }
 </style>
 
 <script>
+  // Mobile menu (below 992px).
+  const burger = document.querySelector<HTMLButtonElement>(".demo-burger");
+  const menu = document.getElementById("demo-menu");
+  burger?.addEventListener("click", () => {
+    const open = burger.getAttribute("aria-expanded") !== "true";
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menu?.classList.toggle("hidden", !open);
+  });
+
   // Preview-only form: validate the email locally. Not connected to HubSpot or
   // the scheduler, so nothing is submitted or stored.
   const form = document.querySelector<HTMLFormElement>(".demo-form");

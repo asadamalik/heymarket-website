@@ -43,6 +43,11 @@
 /*  Design tokens (from the Figma variable definitions)               */
 /* ------------------------------------------------------------------ */
 @theme {
+  /* Bootstrap-matching breakpoints (heymarket.com); used by the /demo page. */
+  --breakpoint-bs-sm: 35.9375rem; /* 575px (live site switches here) */
+  --breakpoint-bs-lg: 62rem; /* 992px */
+  --breakpoint-bs-xl: 75rem; /* 1200px */
+
   --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Primary */
