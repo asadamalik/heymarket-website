@@ -23,13 +23,6 @@ const checks: [string, string?][] = [
   ["See AI agents expediting SMS and email conversations"],
 ];
 
-const badges = [
-  { src: `${A}/g2-leader.svg`, alt: "G2 Leader, Winter 2025" },
-  { src: `${A}/g2-best-roi.svg`, alt: "G2 Best Est. ROI, Enterprise, Winter 2025" },
-  { src: `${A}/g2-easiest.svg`, alt: "G2 Easiest To Use, Enterprise, Winter 2025" },
-  { src: `${A}/g2-high-performer.svg`, alt: "G2 High Performer, Enterprise, Winter 2025" },
-];
-
 // Same set as the heymarket.com homepage. Phones: 3 on the first row, 2 on the
 // second. From 768px (tablet) up: one row.
 const logos = [
@@ -64,6 +57,50 @@ const stories: Story[] = [
     quote: "I have three screens up at all times. Heymarket is one of them. It’s added a lot of ease to our job.",
   },
 ];
+
+// Booking form options, same order as the live heymarket.com/demo HubSpot form.
+const countries = [
+  "United States", "Canada", "India", "United Kingdom", "Australia", "Germany", "Brazil", "China", "France", "Japan",
+  "Mexico", "Israel", "United Arab Emirates", "Switzerland", "Russian Federation", "Spain", "Andorra", "Afghanistan",
+  "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "American Samoa", "Austria",
+  "Aruba", "Åland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso",
+  "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthélemy", "Bermuda", "Brunei Darussalam",
+  "Bolivia, Plurinational State of", "Bonaire, Sint Eustatius and Saba", "Bahamas", "Bhutan", "Bouvet Island", "Botswana",
+  "Belarus", "Belize", "Cocos (Keeling) Islands", "Congo, the Democratic Republic of the", "Central African Republic",
+  "Congo", "Cote d'Ivoire", "Cook Islands", "Chile", "Cameroon", "Colombia", "Costa Rica", "Cuba", "Cabo Verde", "Curaçao",
+  "Christmas Island", "Cyprus", "Czechia", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador",
+  "Estonia", "Egypt", "Western Sahara", "Eritrea", "Ethiopia", "Finland", "Fiji", "Falkland Islands (Malvinas)",
+  "Micronesia", "Faroe Islands", "Gabon", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar",
+  "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece",
+  "South Georgia and the South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong",
+  "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Isle of Man",
+  "British Indian Ocean Territory", "Iraq", "Iran, Islamic Republic of", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan",
+  "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis",
+  "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos",
+  "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia",
+  "Libya", "Morocco", "Monaco", "Moldova, Republic of", "Montenegro", "Saint Martin (French part)", "Madagascar",
+  "Marshall Islands", "Macedonia, the former Yugoslav Republic of", "Mali", "Myanmar", "Mongolia", "Macao",
+  "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi",
+  "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands",
+  "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea",
+  "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn", "Puerto Rico", "Palestine", "Portugal",
+  "Palau", "Paraguay", "Qatar", "Reunion", "Romania", "Serbia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles",
+  "Sudan", "Sweden", "Singapore", "Saint Helena, Ascension and Tristan da Cunha", "Slovenia", "Svalbard and Jan Mayen",
+  "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe",
+  "El Salvador", "Sint Maarten (Dutch part)", "Syrian Arab Republic", "Swaziland", "Turks and Caicos Islands", "Chad",
+  "French Southern Territories", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia",
+  "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan", "Tanzania, United Republic of", "Ukraine", "Uganda",
+  "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Holy See (Vatican City State)",
+  "Saint Vincent and the Grenadines", "Venezuela, Bolivarian Republic of", "Virgin Islands, British",
+  "U.S. Virgin Islands", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Kosovo", "Yemen", "Mayotte", "South Africa",
+  "Zambia", "Zimbabwe",
+];
+const channels = ["Text messaging", "Email and text messaging"];
+
+// Shared field classes (HubSpot-style: 43px inputs, #cfcfcf border, yellow focus).
+const fieldCls = "block w-full rounded-lg border border-[#cfcfcf] bg-paper px-[15px] py-2 text-base leading-6 text-ink outline-none transition-colors focus:border-[#ffc107]";
+const labelCls = "mb-[5px] block text-sm font-semibold leading-[18px] text-ink-70";
+const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15px] text-[#e8542c]";
 ---
 <Base
   title="Heymarket Demo | Try Business Text Messaging Software"
@@ -96,7 +133,7 @@ const stories: Story[] = [
   <main>
     <!-- Hero: pitch + booking form (stacked below 992px) -->
     <section class="demo-hero bg-purple pb-[90px] pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
-      <div class="bs grid gap-3 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
+      <div class="bs grid gap-8 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
         <div>
           <p class="text-lg font-bold uppercase leading-[26px] text-[#e1d7fb]">See Heymarket in action</p>
           <div class="mt-4 flex gap-2.5">
@@ -116,28 +153,73 @@ const stories: Story[] = [
               </li>
             ))}
           </ul>
-          <ul class="mt-6 flex gap-4 bs-lg:mt-10" aria-label="G2 awards">
-            {badges.map((b) => (
-              <li class="g2-badge"><img src={b.src} alt={b.alt} width="89" height="116" class="h-auto w-full" /></li>
-            ))}
-          </ul>
         </div>
 
         <div>
-          <form id="book-demo" class="demo-form mx-auto rounded-3xl border border-ink bg-paper p-8 text-ink md:max-w-[580px] bs-lg:max-w-none bs-lg:p-10" novalidate>
+          <form id="book-demo" class="demo-form mx-auto rounded-3xl border border-ink bg-paper p-6 text-ink md:max-w-[580px] bs-lg:max-w-none" novalidate>
             <h2 class="fs-24-32 text-center font-[800] leading-[1.2]">Book a free time slot</h2>
-            <label for="demo-email" class="mt-[34px] block text-sm font-semibold leading-[18px] text-ink-70">
-              Business email<span class="text-[#f2545b]">*</span>
-            </label>
-            <input
-              id="demo-email"
-              name="email"
-              type="email"
-              required
-              autocomplete="email"
-              class="mt-[5px] h-[43px] w-full rounded-lg border border-[#cfcfcf] px-[15px] py-2 text-base leading-6 text-ink outline-none focus:border-purple focus:ring-2 focus:ring-purple/25"
-            />
-            <p class="demo-error mt-1.5 hidden text-sm text-[#f2545b]" role="alert">Please enter a valid business email.</p>
+
+            <!-- Step 1: business email. The rest of the form expands once it's a valid address. -->
+            <div class="mt-[34px]" data-field="email">
+              <label for="demo-email" class={labelCls}>Business email<span class="text-[#f2545b]">*</span></label>
+              <input id="demo-email" name="email" type="email" required autocomplete="email" class={`${fieldCls} h-[43px]`} aria-describedby="demo-email-err" />
+              <p id="demo-email-err" class={errCls} role="alert"></p>
+            </div>
+
+            <!-- Step 2: revealed after a valid email (like the live HubSpot form) -->
+            <div class="demo-more" hidden>
+              <div class="mt-[18px] grid gap-[18px] min-[480px]:grid-cols-2 min-[480px]:gap-x-1">
+                <div data-field="firstname">
+                  <label for="demo-first" class={labelCls}>First name<span class="text-[#f2545b]">*</span></label>
+                  <input id="demo-first" name="firstname" type="text" required autocomplete="given-name" class={`${fieldCls} h-[43px]`} aria-describedby="demo-first-err" />
+                  <p id="demo-first-err" class={errCls} role="alert"></p>
+                </div>
+                <div data-field="lastname">
+                  <label for="demo-last" class={labelCls}>Last name<span class="text-[#f2545b]">*</span></label>
+                  <input id="demo-last" name="lastname" type="text" required autocomplete="family-name" class={`${fieldCls} h-[43px]`} aria-describedby="demo-last-err" />
+                  <p id="demo-last-err" class={errCls} role="alert"></p>
+                </div>
+              </div>
+
+              <div class="mt-[18px]" data-field="phone">
+                <label for="demo-phone" class={labelCls}>Mobile phone number<span class="text-[#f2545b]">*</span></label>
+                <input id="demo-phone" name="phone" type="tel" required autocomplete="tel" class={`${fieldCls} h-[43px]`} aria-describedby="demo-phone-err" />
+                <p id="demo-phone-err" class={errCls} role="alert"></p>
+              </div>
+
+              <div class="mt-[18px]" data-field="country">
+                <label for="demo-country" class={labelCls}>Country<span class="text-[#f2545b]">*</span></label>
+                <select id="demo-country" name="country_dropdown" required class={`${fieldCls} demo-select h-[43px] appearance-none pr-10`} aria-describedby="demo-country-err">
+                  <option value="">Please Select</option>
+                  {countries.map((c) => <option value={c}>{c}</option>)}
+                </select>
+                <p id="demo-country-err" class={errCls} role="alert"></p>
+              </div>
+
+              <div class="mt-[18px]">
+                <label for="demo-notes" class={labelCls}>Which features or integrations would you like to see?</label>
+                <textarea id="demo-notes" name="notes" rows="2" class={`${fieldCls} h-[66px] min-h-[66px] resize-y`}></textarea>
+              </div>
+
+              <div class="mt-[18px]">
+                <label for="demo-channel" class={labelCls}>What communication channel(s) are you interested in?</label>
+                <select id="demo-channel" name="channel_interest" class={`${fieldCls} demo-select h-[43px] appearance-none pr-10`}>
+                  <option value="">Please Select</option>
+                  {channels.map((c) => <option value={c}>{c}</option>)}
+                </select>
+              </div>
+
+              <label class="mt-[14px] flex cursor-pointer items-start gap-4">
+                <input name="sms_opt_in" type="checkbox" class="mt-px h-[14px] w-[14px] shrink-0 accent-purple" />
+                <span class="text-[10px] font-semibold leading-[14px] text-ink-70">
+                  I agree to receive SMS messages from Heymarket regarding appointment reminders, confirmations, and
+                  scheduling follow-ups. Message frequency varies. Message and data rates may apply. Reply HELP for help
+                  or STOP to cancel. View our <a href="https://www.heymarket.com/tos/" class="text-ink" target="_blank" rel="noopener">Terms of Service</a>
+                  and <a href="https://www.heymarket.com/privacy/" class="text-ink" target="_blank" rel="noopener">Privacy Policy</a>.
+                </span>
+              </label>
+            </div>
+
             <button
               type="submit"
               class="mt-6 w-full rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[18px] tracking-[1.6px] text-ink transition hover:brightness-95"
@@ -265,11 +347,13 @@ const stories: Story[] = [
   @media (min-width: 992px) { .demo-hero { border-radius: 100px 100px 10px 100px; } }
   @media (min-width: 1200px) { .demo-hero { border-radius: 140px 140px 10px 140px; } }
 
-  /* G2 badges stay on one row and step in size like the live site. */
-  .g2-badge { flex: 1 1 0; } /* fills the row on small phones */
-  @media (min-width: 575px) { .g2-badge { flex: 0 1 84px; } }
-  @media (min-width: 768px) { .g2-badge { flex-basis: 116px; } }
-  @media (min-width: 992px) { .g2-badge { flex-basis: 16.3%; } }
+
+  /* HubSpot-style select arrow. */
+  .demo-select {
+    background-image: url("data:image/svg+xml,%3Csvg width=%2713%27 height=%277%27 viewBox=%270 0 13 7%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cpath d=%27M6.1 6.64a1.1 1.1 0 0 0 1.5 0L12.5 1.9C13.2 1.2 12.7 0 11.7 0H1.3C.3 0-.2 1.2.5 1.9z%27 fill=%27%23000%27/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+  }
 
   /* Speech-bubble story card with a tab label hanging off its top-right. */
   .story-card {
@@ -303,20 +387,91 @@ const stories: Story[] = [
     menu?.classList.toggle("hidden", !open);
   });
 
-  // Preview-only form: validate the email locally. Not connected to HubSpot or
-  // the scheduler, so nothing is submitted or stored.
+  // Booking form — behaves like the live HubSpot form, but is preview-only:
+  // nothing is submitted or stored. The extra fields expand once the email is a
+  // valid address; required fields validate on blur and again on submit.
   const form = document.querySelector<HTMLFormElement>(".demo-form");
-  const email = document.getElementById("demo-email") as HTMLInputElement | null;
-  const error = form?.querySelector<HTMLElement>(".demo-error");
+  const more = form?.querySelector<HTMLElement>(".demo-more");
   const status = form?.querySelector<HTMLElement>(".demo-status");
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!email || !error || !status) return;
-    const ok = email.checkValidity();
-    error.classList.toggle("hidden", ok);
-    email.setAttribute("aria-invalid", String(!ok));
-    status.classList.toggle("hidden", !ok);
-    status.textContent = ok ? "Preview only: this form isn’t connected yet, so nothing was sent." : "";
-    if (!ok) email.focus();
-  });
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const PHONE_RE = /^[0-9+()\-.\sxX]+$/;
+  const FREE_DOMAINS = new Set([
+    "gmail.com", "googlemail.com", "yahoo.com", "ymail.com", "hotmail.com", "outlook.com", "live.com", "msn.com",
+    "aol.com", "icloud.com", "me.com", "mac.com", "protonmail.com", "proton.me", "gmx.com", "mail.com", "yandex.com",
+    "zoho.com", "test.com",
+  ]);
+  const RESERVED_DOMAINS = /(^|\.)example\.(com|org|net)$|\.(test|example|invalid|localhost)$/;
+  const REQUIRED = "This is a required field.";
+
+  const emailError = (v: string): string => {
+    if (!v) return REQUIRED;
+    if (!EMAIL_RE.test(v)) return "Email must be formatted correctly.";
+    const domain = v.split("@")[1].toLowerCase();
+    if (RESERVED_DOMAINS.test(domain)) return "Please enter a valid email address.";
+    if (FREE_DOMAINS.has(domain)) return `Please enter a different email address. This form does not accept addresses from ${domain}.`;
+    return "";
+  };
+
+  // name → validator returning an error message ("" when valid)
+  const rules: Record<string, (v: string) => string> = {
+    email: emailError,
+    firstname: (v) => (v ? "" : REQUIRED),
+    lastname: (v) => (v ? "" : REQUIRED),
+    phone: (v) => (!v ? REQUIRED : PHONE_RE.test(v) ? "" : "Must contain only numbers, +()-. and x."),
+    country_dropdown: (v) => (v ? "" : REQUIRED),
+  };
+
+  const control = (name: string) =>
+    form?.querySelector<HTMLInputElement | HTMLSelectElement>(`[name="${name}"]`) ?? null;
+
+  const showError = (name: string, message: string) => {
+    const el = control(name);
+    const err = el?.id ? document.getElementById(`${el.id}-err`) : null;
+    if (!el || !err) return;
+    el.setAttribute("aria-invalid", String(Boolean(message)));
+    err.textContent = message;
+    err.classList.toggle("hidden", !message);
+  };
+
+  const validate = (name: string) => {
+    const el = control(name);
+    const message = el ? rules[name](el.value.trim()) : "";
+    showError(name, message);
+    return !message;
+  };
+
+  const reveal = () => {
+    if (more?.hidden) more.hidden = false;
+  };
+
+  if (form && more && status) {
+    const email = control("email") as HTMLInputElement;
+
+    // Expand as soon as the email is a complete, well-formed address.
+    email.addEventListener("input", () => {
+      if (EMAIL_RE.test(email.value.trim())) reveal();
+      if (email.getAttribute("aria-invalid") === "true") validate("email");
+    });
+
+    for (const name of Object.keys(rules)) {
+      const el = control(name);
+      el?.addEventListener("blur", () => validate(name));
+      // Clear an error as soon as the user fixes the field.
+      el?.addEventListener(el instanceof HTMLSelectElement ? "change" : "input", () => {
+        if (el.getAttribute("aria-invalid") === "true") validate(name);
+      });
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      status.classList.add("hidden");
+      if (!validate("email")) { email.focus(); return; }
+      if (more.hidden) { reveal(); control("firstname")?.focus(); return; }
+      const invalid = Object.keys(rules).filter((name) => !validate(name));
+      if (invalid.length) { control(invalid[0])?.focus(); return; }
+      status.textContent = "Preview only: this form isn’t connected yet, so nothing was sent.";
+      status.classList.remove("hidden");
+    });
+  }
 </script>
