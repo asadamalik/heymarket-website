@@ -237,7 +237,7 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
         {logos.map((l, i) => (
           <>
             <li>
-              <img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-10 w-auto max-w-none bs-sm:h-[49px] md:h-[clamp(57px,calc(7.56vw-1px),70px)] bs-lg:h-[70px]" />
+              <img src={l.src} alt={l.alt} width={l.w / 2} height="70" class="h-[min(56px,calc((100vw-78px)/5))] w-auto max-w-none bs-sm:h-[60px] md:h-[clamp(57px,calc(7.56vw-1px),70px)] bs-lg:h-[70px]" />
             </li>
             {i === 2 && <li class="h-0 basis-full md:hidden" aria-hidden="true"></li>}
           </>
