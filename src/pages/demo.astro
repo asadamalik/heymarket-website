@@ -71,21 +71,21 @@ const stories: Story[] = [
 >
   <!-- Header: logo + Sign In (hamburger menu below 992px, like the live site) -->
   <header class="relative bg-paper">
-    <div class="mx-auto flex h-[60px] max-w-[1210px] bs-lg:h-[70px] items-center justify-between px-[15px] bs-lg:px-5">
+    <div class="mx-auto flex h-[60px] max-w-[1210px] bs-lg:h-[70px] items-center justify-between px-[31px] bs-lg:px-5">
       <a href={import.meta.env.BASE_URL} aria-label="Heymarket home">
         <img src={`${A}/heymarket-logo-black.svg`} alt="Heymarket" width="149" height="33" class="h-7 w-auto bs-lg:h-[33px]" />
       </a>
       <a href="https://app.heymarket.com/account/login" class="hidden text-base font-medium leading-[18px] text-ink hover:underline bs-lg:inline">Sign In</a>
       <button
         type="button"
-        class="demo-burger grid h-10 w-10 place-items-center text-purple bs-lg:hidden"
+        class="demo-burger flex h-[23px] w-8 flex-col justify-between bs-lg:hidden"
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="demo-menu"
       >
-        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M3 6h18M3 12h18M3 18h18" />
-        </svg>
+        <span class="h-[3px] w-full bg-purple"></span>
+        <span class="h-[3px] w-full bg-purple"></span>
+        <span class="h-[3px] w-full bg-purple"></span>
       </button>
     </div>
     <nav id="demo-menu" class="absolute inset-x-0 top-full z-20 hidden border-t border-black/10 bg-paper px-[15px] py-4 shadow-lg bs-lg:hidden" aria-label="Account">
@@ -96,27 +96,27 @@ const stories: Story[] = [
   <main>
     <!-- Hero: pitch + booking form (stacked below 992px) -->
     <section class="demo-hero bg-purple pb-[90px] pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
-      <div class="bs grid gap-8 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
+      <div class="bs grid gap-3 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
         <div>
-          <p class="text-lg font-bold uppercase leading-[26px]">See Heymarket in action</p>
+          <p class="text-lg font-bold uppercase leading-[26px] text-[#e1d7fb]">See Heymarket in action</p>
           <div class="mt-4 flex gap-2.5">
             {avatars.map((a) => (
               <img src={a.src} alt={a.alt} width="75" height="75" class="h-[60px] w-[60px] rounded-full object-cover bs-lg:h-[75px] bs-lg:w-[75px]" />
             ))}
           </div>
           <h1 id="demo-heading" class="demo-h1 mt-4 font-[800]">All your messages, one shared inbox</h1>
-          <ul class="mt-4 space-y-2">
+          <ul class="mt-4 space-y-3">
             {checks.map(([line1, line2]) => (
               <li class="relative pl-8 text-base font-semibold leading-5 md:leading-6">
-                <svg viewBox="0 0 24 24" class="absolute left-0 top-0 h-5 w-5 md:top-0.5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                <svg viewBox="0 0 24 24" class="absolute left-0 top-1/2 h-[22px] w-[22px] -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2 12.5l6.5 6L22 5" />
                 </svg>
                 {line1}
                 {line2 && <> <br class="hidden bs-lg:inline" />{line2}</>}
               </li>
             ))}
           </ul>
-          <ul class="mt-10 flex gap-4" aria-label="G2 awards">
+          <ul class="mt-6 flex gap-4 bs-lg:mt-10" aria-label="G2 awards">
             {badges.map((b) => (
               <li class="g2-badge"><img src={b.src} alt={b.alt} width="89" height="116" class="h-auto w-full" /></li>
             ))}
@@ -236,6 +236,11 @@ const stories: Story[] = [
 </Base>
 
 <style>
+  /* heymarket.com sets the whole page in the device system font. */
+  :global(body) {
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
   /* Bootstrap-equivalent container, matching heymarket.com's breakpoints. */
   .bs { width: 100%; margin-inline: auto; padding-inline: 15px; }
   @media (min-width: 575px) { .bs { max-width: 540px; } }
@@ -258,8 +263,8 @@ const stories: Story[] = [
   @media (min-width: 1200px) { .demo-hero { border-radius: 140px 140px 10px 140px; } }
 
   /* G2 badges stay on one row and step in size like the live site. */
-  .g2-badge { flex: 0 1 74px; }
-  @media (min-width: 575px) { .g2-badge { flex-basis: 84px; } }
+  .g2-badge { flex: 1 1 0; } /* fills the row on small phones */
+  @media (min-width: 575px) { .g2-badge { flex: 0 1 84px; } }
   @media (min-width: 768px) { .g2-badge { flex-basis: 116px; } }
   @media (min-width: 992px) { .g2-badge { flex-basis: 16.3%; } }
 
