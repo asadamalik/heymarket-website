@@ -1,7 +1,7 @@
 ---
 // /reviews — "What customers are saying about Heymarket".
-// Built from Figma "Migrate to-v1" (node 3680:66723): dark 2026 header, black hero,
-// 2-column grid of review cards, footer.
+// Built from Figma "Migrate to-v1" (node 3680:66723): white 2026 header, purple
+// rounded hero, 2-column grid of review cards, footer.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
@@ -29,14 +29,15 @@ const reviews = ORDER.map((author) => {
   title="Customer Reviews | Heymarket"
   description="See what businesses say about Heymarket's shared inbox, AI agents, and integrations for SMS and email."
 >
-  <Nav variant="dark" />
+  <Nav variant="light" />
 
   <main>
     <!-- Hero -->
-    <section class="bg-ink px-5 py-12 text-paper md:py-[72px] lg:px-[165px]" aria-labelledby="reviews-heading">
-      <h1 id="reviews-heading" class="mx-auto max-w-[1110px] text-center text-[clamp(2.25rem,1.5rem+3.2vw,3.5rem)] font-[800] leading-[1.2]">
-        What customers are saying about Heymarket
+    <section class="reviews-hero flex flex-col items-center gap-[30px] bg-purple px-5 py-12 text-center md:py-20 lg:px-[165px]" aria-labelledby="reviews-heading">
+      <h1 id="reviews-heading" class="w-full text-[clamp(2.25rem,1.5rem+3.2vw,3.5rem)] font-[800] leading-[1.2] text-beige-30">
+        Heymarket Reviews
       </h1>
+      <p class="w-full text-base leading-6 text-paper">What customers are saying about Heymarket</p>
     </section>
 
     <!-- Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) -->
@@ -85,6 +86,12 @@ const reviews = ORDER.map((author) => {
 </Base>
 
 <style>
+  /* Figma hero: 120px corners except a 10px bottom-right, scaled down on small screens. */
+  .reviews-hero {
+    --r: clamp(40px, 8.34vw, 120px);
+    border-radius: var(--r) var(--r) 10px var(--r);
+  }
+
   /* Speech-bubble card with a hard purple offset shadow that follows its shape. */
   .review-card {
     border-radius: 40px 40px 8px 40px;
