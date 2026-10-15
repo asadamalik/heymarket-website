@@ -10,6 +10,13 @@ import { siteTestimonials } from "../data/testimonials";
 const A = "/heymarket-website/assets";
 const STARS = 5;
 
+// Logo for where each review was posted (Figma "Review Source" component, 48×48).
+const SOURCES = {
+  hubspot: { src: `${A}/review-source-hubspot.svg`, label: "HubSpot" },
+  salesforce: { src: `${A}/review-source-salesforce.webp`, label: "Salesforce" },
+  heymarket: { src: `${A}/review-source-heymarket.svg`, label: "Heymarket" },
+} as const;
+
 // Same eight reviews as heymarket.com, in the order the Figma design lists them.
 const ORDER = ["A. Farnsworth", "A. Ravenelle", "S. Taver", "S. Pinnaka", "M. Heard", "A. DiSalvo", "L. Finkelstein", "T. Clarkson"];
 const reviews = ORDER.map((author) => {
@@ -37,10 +44,19 @@ const reviews = ORDER.map((author) => {
       <ul class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
         {reviews.map((r) => (
           <li class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
-            <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
-              {Array.from({ length: STARS }, () => (
-                <img src={`${A}/review-star.svg`} alt="" width="24" height="24" class="h-6 w-6" />
-              ))}
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
+                {Array.from({ length: STARS }, () => (
+                  <img src={`${A}/review-star.svg`} alt="" width="24" height="24" class="h-6 w-6" />
+                ))}
+              </div>
+              <img
+                src={SOURCES[r.source].src}
+                alt={`Review from ${SOURCES[r.source].label}`}
+                width="48"
+                height="48"
+                class="h-12 w-12 shrink-0"
+              />
             </div>
             <h2 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h2>
             <p class="text-base leading-6 text-ink">{r.body}</p>
