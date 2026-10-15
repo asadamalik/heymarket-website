@@ -15,14 +15,6 @@ const avatars = [
   { src: `${A}/demo-avatar-josh.webp`, alt: "Josh, Heymarket product specialist" },
 ];
 
-// [line 1, optional line 2]: line 2 starts on a new line from 992px only.
-const checks: [string, string?][] = [
-  ["Tell us about your messaging needs"],
-  ["Get expert recommendations on features"],
-  ["Based on your use case, see a live demo on the spot", "or get set up with a specialized live demo"],
-  ["See AI agents expediting SMS and email conversations"],
-];
-
 // Same set as the heymarket.com homepage. Phones: 3 on the first row, 2 on the
 // second. From 768px (tablet) up: one row.
 const logos = [
@@ -59,43 +51,8 @@ const stories: Story[] = [
 ];
 
 // Booking form options, same order as the live heymarket.com/demo HubSpot form.
-const countries = [
-  "United States", "Canada", "India", "United Kingdom", "Australia", "Germany", "Brazil", "China", "France", "Japan",
-  "Mexico", "Israel", "United Arab Emirates", "Switzerland", "Russian Federation", "Spain", "Andorra", "Afghanistan",
-  "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Angola", "Antarctica", "Argentina", "American Samoa", "Austria",
-  "Aruba", "Åland Islands", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso",
-  "Bulgaria", "Bahrain", "Burundi", "Benin", "Saint Barthélemy", "Bermuda", "Brunei Darussalam",
-  "Bolivia, Plurinational State of", "Bonaire, Sint Eustatius and Saba", "Bahamas", "Bhutan", "Bouvet Island", "Botswana",
-  "Belarus", "Belize", "Cocos (Keeling) Islands", "Congo, the Democratic Republic of the", "Central African Republic",
-  "Congo", "Cote d'Ivoire", "Cook Islands", "Chile", "Cameroon", "Colombia", "Costa Rica", "Cuba", "Cabo Verde", "Curaçao",
-  "Christmas Island", "Cyprus", "Czechia", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador",
-  "Estonia", "Egypt", "Western Sahara", "Eritrea", "Ethiopia", "Finland", "Fiji", "Falkland Islands (Malvinas)",
-  "Micronesia", "Faroe Islands", "Gabon", "Grenada", "Georgia", "French Guiana", "Guernsey", "Ghana", "Gibraltar",
-  "Greenland", "Gambia", "Guinea", "Guadeloupe", "Equatorial Guinea", "Greece",
-  "South Georgia and the South Sandwich Islands", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong",
-  "Heard Island and McDonald Islands", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Isle of Man",
-  "British Indian Ocean Territory", "Iraq", "Iran, Islamic Republic of", "Iceland", "Italy", "Jersey", "Jamaica", "Jordan",
-  "Kenya", "Kyrgyzstan", "Cambodia", "Kiribati", "Comoros", "Saint Kitts and Nevis",
-  "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Cayman Islands", "Kazakhstan", "Laos",
-  "Lebanon", "Saint Lucia", "Liechtenstein", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia",
-  "Libya", "Morocco", "Monaco", "Moldova, Republic of", "Montenegro", "Saint Martin (French part)", "Madagascar",
-  "Marshall Islands", "Macedonia, the former Yugoslav Republic of", "Mali", "Myanmar", "Mongolia", "Macao",
-  "Northern Mariana Islands", "Martinique", "Mauritania", "Montserrat", "Malta", "Mauritius", "Maldives", "Malawi",
-  "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Norfolk Island", "Nigeria", "Nicaragua", "Netherlands",
-  "Norway", "Nepal", "Nauru", "Niue", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea",
-  "Philippines", "Pakistan", "Poland", "Saint Pierre and Miquelon", "Pitcairn", "Puerto Rico", "Palestine", "Portugal",
-  "Palau", "Paraguay", "Qatar", "Reunion", "Romania", "Serbia", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles",
-  "Sudan", "Sweden", "Singapore", "Saint Helena, Ascension and Tristan da Cunha", "Slovenia", "Svalbard and Jan Mayen",
-  "Slovakia", "Sierra Leone", "San Marino", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe",
-  "El Salvador", "Sint Maarten (Dutch part)", "Syrian Arab Republic", "Swaziland", "Turks and Caicos Islands", "Chad",
-  "French Southern Territories", "Togo", "Thailand", "Tajikistan", "Tokelau", "Timor-Leste", "Turkmenistan", "Tunisia",
-  "Tonga", "Turkey", "Trinidad and Tobago", "Tuvalu", "Taiwan", "Tanzania, United Republic of", "Ukraine", "Uganda",
-  "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Holy See (Vatican City State)",
-  "Saint Vincent and the Grenadines", "Venezuela, Bolivarian Republic of", "Virgin Islands, British",
-  "U.S. Virgin Islands", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Kosovo", "Yemen", "Mayotte", "South Africa",
-  "Zambia", "Zimbabwe",
-];
-const channels = ["Text messaging", "Email and text messaging"];
+const countries = ["United States", "Canada", "Other"];
+const features = ["SMS", "Email", "AI agents", "Integrations", "Shared inbox", "Automations", "Compliance"];
 
 // Shared field classes (HubSpot-style: 43px inputs, #cfcfcf border, yellow focus).
 const fieldCls = "block w-full rounded-lg border border-[#cfcfcf] bg-paper px-[15px] py-2 text-base leading-6 text-ink outline-none transition-colors focus:border-[#ffc107]";
@@ -135,24 +92,15 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
     <section class="demo-hero bg-purple pb-[90px] pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
       <div class="bs grid gap-8 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
         <div>
-          <p class="text-lg font-bold uppercase leading-[26px] text-[#e1d7fb]">See Heymarket in action</p>
-          <div class="mt-4 flex gap-2.5">
+          <div class="flex gap-2.5">
             {avatars.map((a) => (
               <img src={a.src} alt={a.alt} width="75" height="75" class="h-[60px] w-[60px] rounded-full object-cover bs-lg:h-[75px] bs-lg:w-[75px]" />
             ))}
           </div>
-          <h1 id="demo-heading" class="demo-h1 mt-4 font-[800]">All your messages, one shared inbox</h1>
-          <ul class="mt-4 space-y-3">
-            {checks.map(([line1, line2]) => (
-              <li class="relative pl-8 text-base font-semibold leading-5 md:leading-6">
-                <svg viewBox="0 0 24 24" class="absolute left-0 top-1/2 h-[22px] w-[22px] -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2 12.5l6.5 6L22 5" />
-                </svg>
-                {line1}
-                {line2 && <> <br class="hidden bs-lg:inline" />{line2}</>}
-              </li>
-            ))}
-          </ul>
+          <h1 id="demo-heading" class="demo-h1 mt-4 font-[800]">Speak to a product specialist about your team’s messaging</h1>
+          <p class="mt-4 text-lg font-medium leading-[27px]">
+            A 30-minute call to learn how shared inboxes, AI agents, SMS, and email fit your use case.
+          </p>
         </div>
 
         <div>
@@ -182,8 +130,8 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
               </div>
 
               <div class="mt-[18px]" data-field="phone">
-                <label for="demo-phone" class={labelCls}>Mobile phone number<span class="text-[#f2545b]">*</span></label>
-                <input id="demo-phone" name="phone" type="tel" required autocomplete="tel" class={`${fieldCls} h-[43px]`} aria-describedby="demo-phone-err" />
+                <label for="demo-phone" class={labelCls}>Mobile (for text reminders)</label>
+                <input id="demo-phone" name="phone" type="tel" autocomplete="tel" class={`${fieldCls} h-[43px]`} aria-describedby="demo-phone-err" />
                 <p id="demo-phone-err" class={errCls} role="alert"></p>
               </div>
 
@@ -196,18 +144,17 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
                 <p id="demo-country-err" class={errCls} role="alert"></p>
               </div>
 
-              <div class="mt-[18px]">
-                <label for="demo-notes" class={labelCls}>Which features or integrations would you like to see?</label>
-                <textarea id="demo-notes" name="notes" rows="2" class={`${fieldCls} h-[66px] min-h-[66px] resize-y`}></textarea>
-              </div>
-
-              <div class="mt-[18px]">
-                <label for="demo-channel" class={labelCls}>What communication channel(s) are you interested in?</label>
-                <select id="demo-channel" name="channel_interest" class={`${fieldCls} demo-select h-[43px] appearance-none pr-10`}>
-                  <option value="">Please Select</option>
-                  {channels.map((c) => <option value={c}>{c}</option>)}
-                </select>
-              </div>
+              <fieldset class="mt-[18px]">
+                <legend class={labelCls}>Which features or integrations would you like to see?</legend>
+                <div class="flex flex-wrap gap-2">
+                  {features.map((f) => (
+                    <label class="cursor-pointer">
+                      <input type="checkbox" name="features" value={f} class="peer sr-only" />
+                      <span class="inline-flex select-none items-center rounded-full border border-[#cfcfcf] bg-paper px-4 py-1.5 text-sm font-semibold leading-[18px] text-ink-70 transition-colors hover:border-purple peer-checked:border-purple peer-checked:bg-purple peer-checked:text-paper peer-focus-visible:ring-2 peer-focus-visible:ring-purple/40">{f}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
 
               <label class="mt-[14px] flex cursor-pointer items-start gap-4">
                 <input name="sms_opt_in" type="checkbox" class="mt-px h-[14px] w-[14px] shrink-0 accent-purple" />
@@ -418,7 +365,7 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
     email: emailError,
     firstname: (v) => (v ? "" : REQUIRED),
     lastname: (v) => (v ? "" : REQUIRED),
-    phone: (v) => (!v ? REQUIRED : PHONE_RE.test(v) ? "" : "Must contain only numbers, +()-. and x."),
+    phone: (v) => (!v || PHONE_RE.test(v) ? "" : "Must contain only numbers, +()-. and x."), // optional
     country_dropdown: (v) => (v ? "" : REQUIRED),
   };
 
