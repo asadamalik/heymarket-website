@@ -1,0 +1,77 @@
+---
+// /reviews — "What customers are saying about Heymarket".
+// Built from Figma "Migrate to-v1" (node 3680:66723): dark 2026 header, black hero,
+// 2-column grid of review cards, footer.
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { siteTestimonials } from "../data/testimonials";
+
+const A = "/heymarket-website/assets";
+const STARS = 5;
+
+// Same eight reviews as heymarket.com, in the order the Figma design lists them.
+const ORDER = ["A. Farnsworth", "A. Ravenelle", "S. Taver", "S. Pinnaka", "M. Heard", "A. DiSalvo", "L. Finkelstein", "T. Clarkson"];
+const reviews = ORDER.map((author) => {
+  const review = siteTestimonials.find((t) => t.author === author);
+  if (!review) throw new Error(`Missing testimonial for ${author}`);
+  return review;
+});
+---
+<Base
+  title="Customer Reviews | Heymarket"
+  description="See what businesses say about Heymarket's shared inbox, AI agents, and integrations for SMS and email."
+>
+  <Nav variant="dark" />
+
+  <main>
+    <!-- Hero -->
+    <section class="bg-ink px-5 py-12 text-paper md:py-[72px] lg:px-[165px]" aria-labelledby="reviews-heading">
+      <h1 id="reviews-heading" class="mx-auto max-w-[1110px] text-center text-[clamp(2.25rem,1.5rem+3.2vw,3.5rem)] font-[800] leading-[1.2]">
+        What customers are saying about Heymarket
+      </h1>
+    </section>
+
+    <!-- Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) -->
+    <section class="py-[60px]" aria-label="Customer reviews">
+      <ul class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
+        {reviews.map((r) => (
+          <li class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
+            <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
+              {Array.from({ length: STARS }, () => (
+                <img src={`${A}/review-star.svg`} alt="" width="24" height="24" class="h-6 w-6" />
+              ))}
+            </div>
+            <h2 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h2>
+            <p class="text-base leading-6 text-ink">{r.body}</p>
+            <p class="text-base font-bold leading-6 text-[#0a0a0a]">{r.author}</p>
+            {r.url && (
+              <a
+                href={r.url}
+                target="_blank"
+                rel="noopener"
+                class="group mt-auto inline-flex items-center gap-1 self-start text-base font-semibold leading-6 text-blue"
+                aria-label={`View ${r.author}'s review (opens in a new tab)`}
+              >
+                View More
+                <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+                </svg>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+
+  <Footer showTryIt={false} />
+</Base>
+
+<style>
+  /* Speech-bubble card with a hard purple offset shadow that follows its shape. */
+  .review-card {
+    border-radius: 40px 40px 8px 40px;
+    filter: drop-shadow(12px 12px 0 var(--color-purple));
+  }
+</style>

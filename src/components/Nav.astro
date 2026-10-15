@@ -1,54 +1,126 @@
 ---
+interface Props {
+  /**
+   * "site"  — black site nav with Free Trial + Book a Demo (default; homepage etc.).
+   * "light" — 2026 Figma header ("Header-New-v2/1200/White"): white, purple Book a demo.
+   * "dark"  — same 2026 Figma header on black: white text, yellow Book a demo.
+   */
+  variant?: "site" | "light" | "dark";
+}
+const { variant = "site" } = Astro.props;
+const A = "/heymarket-website/assets";
 const links = ["Product", "Pricing", "Solutions", "Integrations", "Resources"];
+
+const isSite = variant === "site";
+const isLight = variant === "light";
+
+// Per-variant styling. The 2026 variants share the Figma layout (70px tall,
+// 50px side padding, 40px gaps, Sign In + one Book a demo button).
+const ui = {
+  site: {
+    header: "sticky top-0 z-50 w-full bg-ink text-paper shadow-lg shadow-black/20",
+    nav: "flex w-full items-center gap-6 px-[clamp(1.25rem,0.5rem+3vw,3rem)] py-4",
+    list: "ml-4 hidden items-center gap-7 lg:flex",
+    link: "text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow",
+    burger: "grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md hover:bg-ink-70/40",
+    menu: "absolute right-0 top-12 z-50 w-56 rounded-xl border border-ink-70/60 bg-ink p-2 shadow-2xl",
+    menuLink: "block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40",
+    rule: "my-2 border-ink-70/60",
+    demo: "",
+    demoMobile: "",
+  },
+  light: {
+    header: "sticky top-0 z-50 w-full bg-paper text-ink",
+    nav: "flex h-[70px] w-full items-center gap-10 px-[clamp(1.25rem,0.5rem+3vw,3.125rem)]",
+    list: "hidden items-center gap-[40px] lg:flex",
+    link: "text-[16px] font-semibold leading-[18px] text-ink transition-colors hover:text-purple",
+    burger: "grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md text-purple hover:bg-grey-f5",
+    menu: "absolute right-0 top-12 z-50 w-56 rounded-xl border border-black/10 bg-paper p-2 text-ink shadow-2xl",
+    menuLink: "block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-grey-f5",
+    rule: "my-2 border-black/10",
+    demo: "rounded bg-purple px-4 py-2.5 text-[14px] font-[800] uppercase leading-[18px] text-paper transition-colors hover:bg-purple/90",
+    demoMobile: "mt-2 block rounded bg-purple px-3 py-2.5 text-center text-[13px] font-bold uppercase text-paper",
+  },
+  dark: {
+    header: "sticky top-0 z-50 w-full bg-ink text-paper",
+    nav: "flex h-[70px] w-full items-center gap-10 px-[clamp(1.25rem,0.5rem+3vw,3.125rem)]",
+    list: "hidden items-center gap-[40px] lg:flex",
+    link: "text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow",
+    burger: "grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md hover:bg-ink-70/40",
+    menu: "absolute right-0 top-12 z-50 w-56 rounded-xl border border-ink-70/60 bg-ink p-2 shadow-2xl",
+    menuLink: "block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40",
+    rule: "my-2 border-ink-70/60",
+    demo: "rounded bg-yellow px-4 py-2.5 text-[14px] font-[800] uppercase leading-[18px] text-ink transition-colors hover:bg-yellow-70",
+    demoMobile: "mt-2 block rounded bg-yellow px-3 py-2.5 text-center text-[13px] font-bold uppercase text-ink",
+  },
+}[variant];
+
+// 2026 logo is two Figma assets (bubble + wordmark); the dark variant uses white.
+const bubble = `${A}/${isLight ? "logo-2022-bubble" : "logo-2022-bubble-dark"}.svg`;
+const wordmark = `${A}/${isLight ? "logo-2022-text" : "logo-2022-text-white"}.svg`;
 ---
-<header class="sticky top-0 z-50 w-full bg-ink text-paper shadow-lg shadow-black/20">
-  <nav class="flex w-full items-center gap-6 px-[clamp(1.25rem,0.5rem+3vw,3rem)] py-4" aria-label="Main navigation">
+<header class={ui.header}>
+  <nav class={ui.nav} aria-label="Main navigation">
     <!-- Logo -->
     <a href={import.meta.env.BASE_URL} class="shrink-0" aria-label="Heymarket home">
-      <img src="/heymarket-website/assets/heymarket-logo.webp" alt="Heymarket" width="212" height="44" class="h-8 w-auto" />
+      {isSite ? (
+        <img src={`${A}/heymarket-logo.webp`} alt="Heymarket" width="212" height="44" class="h-8 w-auto" />
+      ) : (
+        <span class="relative block h-[36px] w-[163px] lg:h-[46px] lg:w-[208px]">
+          <img src={bubble} alt="" width="53.2151" height="46" class="absolute inset-y-0 left-0 h-full w-[25.58%]" />
+          <img src={wordmark} alt="Heymarket" width="146.662" height="27.7888" class="absolute left-[29.49%] top-[19.95%] h-[60.41%] w-[70.51%]" />
+        </span>
+      )}
     </a>
 
     <!-- Desktop nav links -->
-    <ul class="ml-4 hidden items-center gap-7 lg:flex">
+    <ul class={ui.list}>
       {links.map((l) => (
-        <li>
-          <a
-            href="#"
-            class="text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow"
-          >{l}</a>
-        </li>
+        <li><a href="#" class={ui.link}>{l}</a></li>
       ))}
     </ul>
 
     <!-- Right actions -->
     <div class="ml-auto hidden items-center gap-4 md:flex">
-      <a href="#" class="text-[16px] font-semibold leading-[18px] text-paper transition-colors hover:text-yellow">Sign In</a>
-      <a
-        href="#"
-        class="rounded-md bg-ink-70 px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-paper transition-colors hover:bg-ink-70/80"
-      >Free Trial</a>
-      <a
-        href="#"
-        class="rounded-md bg-yellow px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
-      >Book a Demo</a>
+      <a href="#" class={ui.link}>Sign In</a>
+      {isSite ? (
+        <>
+          <a
+            href="#"
+            class="rounded-md bg-ink-70 px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-paper transition-colors hover:bg-ink-70/80"
+          >Free Trial</a>
+          <a
+            href="#"
+            class="rounded-md bg-yellow px-4 py-2.5 text-[14px] font-extrabold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 hover:bg-yellow-70"
+          >Book a Demo</a>
+        </>
+      ) : (
+        <a href="#" class={ui.demo}>Book a demo</a>
+      )}
     </div>
 
     <!-- Mobile menu button -->
     <details class="relative ml-auto md:hidden">
-      <summary class="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-md hover:bg-ink-70/40">
+      <summary class={ui.burger}>
         <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
         </svg>
         <span class="sr-only">Open menu</span>
       </summary>
-      <div class="absolute right-0 top-12 z-50 w-56 rounded-xl border border-ink-70/60 bg-ink p-2 shadow-2xl">
+      <div class={ui.menu}>
         {links.map((l) => (
-          <a href="#" class="block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40">{l}</a>
+          <a href="#" class={ui.menuLink}>{l}</a>
         ))}
-        <hr class="my-2 border-ink-70/60" />
-        <a href="#" class="block rounded-lg px-3 py-2.5 text-[15px] font-medium hover:bg-ink-70/40">Sign In</a>
-        <a href="#" class="mt-1 block rounded-lg bg-ink-70 px-3 py-2.5 text-center text-[13px] font-bold uppercase">Free Trial</a>
-        <a href="#" class="mt-2 block rounded-lg bg-yellow px-3 py-2.5 text-center text-[13px] font-bold uppercase text-ink">Book a Demo</a>
+        <hr class={ui.rule} />
+        <a href="#" class={ui.menuLink}>Sign In</a>
+        {isSite ? (
+          <>
+            <a href="#" class="mt-1 block rounded-lg bg-ink-70 px-3 py-2.5 text-center text-[13px] font-bold uppercase">Free Trial</a>
+            <a href="#" class="mt-2 block rounded-lg bg-yellow px-3 py-2.5 text-center text-[13px] font-bold uppercase text-ink">Book a Demo</a>
+          </>
+        ) : (
+          <a href="#" class={ui.demoMobile}>Book a demo</a>
+        )}
       </div>
     </details>
   </nav>

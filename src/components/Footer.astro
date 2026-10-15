@@ -1,4 +1,10 @@
 ---
+interface Props {
+  /** Show the "Try it yourself / Text HEY" band (Figma Footer-New/1200px omits it). */
+  showTryIt?: boolean;
+}
+const { showTryIt = true } = Astro.props;
+
 const columns = [
   {
     heading: "Industries",
@@ -63,6 +69,7 @@ const legal = ["Terms", "Privacy Policy", "DPA", "Status", "Sitemap"];
 <footer class="bg-ink text-paper">
   <div class="container-x py-16">
     <!-- Try it yourself -->
+    {showTryIt && (
     <div class="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
       <img src="/heymarket-website/assets/footer-bubble.webp" alt="" width="75" height="50" class="h-12 w-auto" />
       <div>
@@ -72,9 +79,10 @@ const legal = ["Terms", "Privacy Policy", "DPA", "Status", "Sitemap"];
         </p>
       </div>
     </div>
+    )}
 
     <!-- Link columns -->
-    <div class="mt-14 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+    <div class={`${showTryIt ? "mt-14" : ""} grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5`}>
       {columns.map((col) => (
         <div>
           <h3 class="text-base font-bold text-yellow">{col.heading}</h3>

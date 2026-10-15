@@ -1,63 +1,8 @@
 ---
+import { siteTestimonials } from "../data/testimonials";
+
 // Testimonials from heymarket.com (same order). The first is active on load.
-const items = [
-  {
-    featured: true,
-    title: "Couldn't recommend highly enough",
-    body: "Heymarket has been a game-changer for our business and is so much easier to use than other texting platforms we've tried. The Salesforce integration is very easy to use. Heymarket's integration and automation has allowed us to do things we didn't even know were possible.",
-    author: "A. Farnsworth",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Heymarket is THE business messaging solution",
-    body: "We are able to get clients answers in an expedited manner, increasing our customer experience as a whole. Highly recommend over other business messaging applications that integrate with HubSpot.",
-    author: "A. Ravenelle",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Amazing software and even better client support",
-    body: "Huge fan of Heymarket and the entire integration with Salesforce. The software itself is great but attaching it to salesforce with the ease and professional client relationship, it's a tool we will continue to use and grow with.",
-    author: "S. Taver",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Best SMS tool on the market",
-    body: "Heymarket has been a fantastic tool for our business. It's like having a team wide email inbox for managing SMS comms with users and customers. Today we are successfully managing our entire SMS channel through Heymarket!",
-    author: "M. Heard",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Great automation and support!",
-    body: "Heymarket’s HubSpot integration works really well and allows us to automate a lot of things for our sales team (and sales teams always need easy and automated things, right?). Plus, the technical support is awesome!",
-    author: "A. DiSalvo",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Best SMS integration",
-    body: "Heymarket allowed us to integrate with various platforms (Apple Messaging, SMS, Facebook and Slack) and bring all of that communications into HubSpot. It allows us to have two way communication and storing all of the communication in a single place.",
-    author: "S. Pinnaka",
-    role: "Technology",
-  },
-  {
-    featured: false,
-    title: "Great customer service and easy to use",
-    body: "This app was very easy to set up with clear instructions and our users are pleased with their visibility into messaging and the speed. Customer service was excellent and very responsive to questions during and after setup.",
-    author: "L. Finkelstein",
-    role: "",
-  },
-  {
-    featured: false,
-    title: "Amazing support and features",
-    body: "I had a fantastic experience with Heymarket from start to finish. The team at Heymarket is simply outstanding and always ready to assist. Their service is top-notch, and I wholeheartedly recommend it to anyone in need of an SMS integration solution.",
-    author: "T. Clarkson",
-    role: "Healthcare",
-  },
-];
+const items = siteTestimonials.map((t, i) => ({ ...t, featured: i === 0 }));
 
 // Render the set three times (copy | real | copy) so the washed-out
 // neighbours wrap around: the last card sits left of the first, and the first
