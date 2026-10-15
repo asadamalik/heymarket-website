@@ -69,27 +69,13 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
       <a href={import.meta.env.BASE_URL} aria-label="Heymarket home">
         <img src={`${A}/heymarket-logo-black.svg`} alt="Heymarket" width="149" height="33" class="h-7 w-auto bs-lg:h-[33px]" />
       </a>
-      <a href="https://app.heymarket.com/account/login" class="hidden text-base font-medium leading-[18px] text-ink hover:underline bs-lg:inline">Sign In</a>
-      <button
-        type="button"
-        class="demo-burger flex h-[23px] w-8 flex-col justify-between bs-lg:hidden"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="demo-menu"
-      >
-        <span class="h-[3px] w-full bg-purple"></span>
-        <span class="h-[3px] w-full bg-purple"></span>
-        <span class="h-[3px] w-full bg-purple"></span>
-      </button>
+      <a href="https://app.heymarket.com/account/login" class="text-sm font-medium leading-[18px] text-ink hover:underline bs-lg:text-base">Sign In</a>
     </div>
-    <nav id="demo-menu" class="absolute inset-x-0 top-full z-20 hidden border-t border-black/10 bg-paper px-[15px] py-4 shadow-lg bs-lg:hidden" aria-label="Account">
-      <a href="https://app.heymarket.com/account/login" class="block py-2 text-base font-medium text-ink">Sign In</a>
-    </nav>
   </header>
 
   <main>
     <!-- Hero: pitch + booking form (stacked below 992px) -->
-    <section class="demo-hero bg-purple pb-[90px] pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
+    <section class="demo-hero bg-purple pb-4 pt-8 text-paper md:pb-8 bs-lg:py-16" aria-labelledby="demo-heading">
       <div class="bs grid gap-8 bs-lg:grid-cols-2 bs-lg:gap-[30px]">
         <div>
           <div class="flex gap-2.5">
@@ -99,7 +85,7 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
           </div>
           <h1 id="demo-heading" class="demo-h1 mt-4 font-[800]">Speak to a product specialist about your team’s messaging</h1>
           <p class="mt-4 text-lg font-medium leading-[27px]">
-            A 30-minute call to learn how shared inboxes, AI agents, SMS, and email fit your use case.
+            A 30-minute call to learn how shared inboxes and AI agents for SMS and email fit your use case.
           </p>
         </div>
 
@@ -171,7 +157,7 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
               type="submit"
               class="mt-6 w-full rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[18px] tracking-[1.6px] text-ink transition hover:brightness-95"
             >Pick your time</button>
-            <p class="mt-4 text-center text-sm leading-[18px] text-[#b3b3b3]">Heymarket is currently available in the US and Canada.</p>
+            <p class="mt-4 hidden text-center text-sm leading-[18px] text-[#b3b3b3] md:block">Heymarket is currently available in the US and Canada.</p>
             <p class="demo-status mt-2 hidden text-center text-sm leading-[18px] text-ink-70" role="status"></p>
           </form>
         </div>
@@ -179,7 +165,7 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
     </section>
 
     <!-- Customer logos: one row at every width -->
-    <section class="py-12" aria-label="Customers">
+    <section class="pb-12 pt-5 md:pt-12" aria-label="Customers">
       <ul class="bs flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:flex-nowrap md:gap-4 bs-lg:gap-[30px] bs-xl:justify-between bs-xl:px-[61px]">
         {logos.map((l, i) => (
           <>
@@ -289,8 +275,8 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
     .demo-h1 { font-size: clamp(2.5rem, 2.0455rem + 1.9394vw, 3.5rem); line-height: 1.2; }
   }
 
-  /* Hero corners: square top + 60px bottom-left on mobile, 100px at 992, 140px at 1200. */
-  .demo-hero { border-radius: 0 0 10px 60px; }
+  .demo-hero { border-radius: 0; } /* phones: square corners */
+  @media (min-width: 768px) { .demo-hero { border-radius: 60px 60px 10px 60px; } } /* tablet: rounded top too */
   @media (min-width: 992px) { .demo-hero { border-radius: 100px 100px 10px 100px; } }
   @media (min-width: 1200px) { .demo-hero { border-radius: 140px 140px 10px 140px; } }
 
@@ -324,16 +310,6 @@ const errCls = "field-error mt-1.5 hidden pl-2 text-xs font-semibold leading-[15
 </style>
 
 <script>
-  // Mobile menu (below 992px).
-  const burger = document.querySelector<HTMLButtonElement>(".demo-burger");
-  const menu = document.getElementById("demo-menu");
-  burger?.addEventListener("click", () => {
-    const open = burger.getAttribute("aria-expanded") !== "true";
-    burger.setAttribute("aria-expanded", String(open));
-    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    menu?.classList.toggle("hidden", !open);
-  });
-
   // Booking form — behaves like the live HubSpot form, but is preview-only:
   // nothing is submitted or stored. The extra fields expand once the email is a
   // valid address; required fields validate on blur and again on submit.
