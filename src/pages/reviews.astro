@@ -1,7 +1,7 @@
 ---
 // /reviews — "What customers are saying about Heymarket".
 // Built from Figma "Migrate to-v1" (node 3680:66723): white 2026 header, purple
-// rounded hero, 2-column grid of review cards, closing CTA, footer.
+// rounded hero, review cards split by two "Trusted by thousands" CTA bands, footer.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
@@ -24,6 +24,7 @@ const reviews = ORDER.map((author) => {
   if (!review) throw new Error(`Missing testimonial for ${author}`);
   return review;
 });
+const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
 ---
 <Base
   title="Customer Reviews | Heymarket"
@@ -40,65 +41,69 @@ const reviews = ORDER.map((author) => {
       <p class="w-full text-[20px] font-semibold leading-6 text-paper">What customers are saying about Heymarket</p>
     </section>
 
-    <!-- Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) -->
-    <section class="py-[60px]" aria-label="Customer reviews">
-      <ul class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
-        {reviews.map((r) => (
-          <li class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
-            <div class="flex items-center justify-between gap-4">
-              <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
-                {Array.from({ length: STARS }, () => (
-                  <img src={`${A}/review-star.svg`} alt="" width="24" height="24" class="h-6 w-6" />
-                ))}
-              </div>
-              <img
-                src={SOURCES[r.source].src}
-                alt={`Review from ${SOURCES[r.source].label}`}
-                width="48"
-                height="48"
-                class="h-12 w-12 shrink-0"
-              />
-            </div>
-            <h2 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h2>
-            <p class="text-base leading-6 text-ink">{r.body}</p>
-            <p class="text-base font-bold leading-6 text-[#0a0a0a]">{r.author}</p>
-            {r.url && (
-              <a
-                href={r.url}
-                target="_blank"
-                rel="noopener"
-                class="group mt-auto inline-flex items-center gap-1 self-start text-base font-semibold leading-6 text-blue"
-                aria-label={`View ${r.author}'s review (opens in a new tab)`}
-              >
-                View More
-                <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
-                </svg>
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    </section>
+    <!-- Figma order: 2 reviews, CTA band, remaining 6 reviews, CTA band again. -->
+    {REVIEW_GROUPS.map((group, i) => (
+      <>
+        {/* Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) */}
+        <section class="py-[60px]" aria-label="Customer reviews">
+          <ul class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
+            {group.map((r) => (
+              <li class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
+                <div class="flex items-center justify-between gap-4">
+                  <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
+                    {Array.from({ length: STARS }, () => (
+                      <img src={`${A}/review-star.svg`} alt="" width="24" height="24" class="h-6 w-6" />
+                    ))}
+                  </div>
+                  <img
+                    src={SOURCES[r.source].src}
+                    alt={`Review from ${SOURCES[r.source].label}`}
+                    width="48"
+                    height="48"
+                    class="h-12 w-12 shrink-0"
+                  />
+                </div>
+                <h2 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h2>
+                <p class="text-base leading-6 text-ink">{r.body}</p>
+                <p class="text-base font-bold leading-6 text-[#0a0a0a]">{r.author}</p>
+                {r.url && (
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener"
+                    class="group mt-auto inline-flex items-center gap-1 self-start text-base font-semibold leading-6 text-blue"
+                    aria-label={`View ${r.author}'s review (opens in a new tab)`}
+                  >
+                    View More
+                    <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+                    </svg>
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
 
-    <!-- Closing CTA (Figma "Section 10-Enterprise text messaging features"); copy from
-         heymarket.com's testimonials section. -->
-    <section class="bg-purple px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby="trusted-heading">
-      <div class="mx-auto flex max-w-[920px] flex-col items-center gap-10">
-        <div class="flex flex-col items-center gap-4">
-          <h2 id="trusted-heading" class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
-            Trusted by thousands of businesses
-          </h2>
-          <p class="text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-[29px]">
-            Companies choose our business text messaging service for its powerful, intuitive features.
-          </p>
-        </div>
-        <a
-          href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
-          class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
-        >Book a demo</a>
-      </div>
-    </section>
+        {/* CTA band (Figma "Frame 2353"/"Frame 2354"); copy from heymarket.com's testimonials section. */}
+        <section class="bg-purple px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby={`trusted-heading-${i}`}>
+          <div class="mx-auto flex max-w-[920px] flex-col items-center gap-10">
+            <div class="flex flex-col items-center gap-4">
+              <h2 id={`trusted-heading-${i}`} class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
+                Trusted by thousands of businesses
+              </h2>
+              <p class="text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-[29px]">
+                Companies choose our business text messaging service for its powerful, intuitive features.
+              </p>
+            </div>
+            <a
+              href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
+              class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
+            >Book a demo</a>
+          </div>
+        </section>
+      </>
+    ))}
   </main>
 
   <Footer showTryIt={false} />
