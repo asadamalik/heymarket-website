@@ -25,6 +25,8 @@ const reviews = ORDER.map((author) => {
   return review;
 });
 const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
+// Same sign-up page heymarket.com's "Start free trial" buttons use.
+const TRIAL_URL = "https://app.heymarket.com/account/signup";
 ---
 <Base
   title="Customer Reviews | Heymarket"
@@ -96,10 +98,19 @@ const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
                 Companies choose our business text messaging service for its powerful, intuitive features.
               </p>
             </div>
-            <a
-              href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
-              class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
-            >Book a demo</a>
+            <div class="flex flex-wrap items-start justify-center gap-3">
+              <a
+                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
+                class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
+              >Book a demo</a>
+              {/* Figma adds the trial button to the first band only. */}
+              {i === 0 && (
+                <a
+                  href={TRIAL_URL}
+                  class="rounded px-6 py-4 text-base font-[800] uppercase leading-[18px] text-paper transition-colors hover:bg-paper/30"
+                >Start free trial</a>
+              )}
+            </div>
           </div>
         </section>
       </>
