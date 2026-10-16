@@ -1,7 +1,7 @@
 ---
 // /reviews — "What customers are saying about Heymarket".
 // Built from Figma "Migrate to-v1" (node 3680:66723): white 2026 header, purple
-// rounded hero, review cards split by two "Trusted by thousands" CTA bands, footer.
+// rounded hero, review cards split by two "Learn more" demo CTA bands, footer.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
@@ -25,8 +25,6 @@ const reviews = ORDER.map((author) => {
   return review;
 });
 const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
-// Same sign-up page heymarket.com's "Start free trial" buttons use.
-const TRIAL_URL = "https://app.heymarket.com/account/signup";
 ---
 <Base
   title="Customer Reviews | Heymarket"
@@ -43,7 +41,7 @@ const TRIAL_URL = "https://app.heymarket.com/account/signup";
       <p class="w-full text-[20px] font-semibold leading-6 text-paper">What customers are saying about Heymarket</p>
     </section>
 
-    <!-- Figma order: 2 reviews, CTA band, remaining 6 reviews, CTA band again. -->
+    <!-- Figma order: 2 reviews, demo CTA band, remaining 6 reviews, demo CTA band again. -->
     {REVIEW_GROUPS.map((group, i) => (
       <>
         {/* Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) */}
@@ -87,30 +85,16 @@ const TRIAL_URL = "https://app.heymarket.com/account/signup";
           </ul>
         </section>
 
-        {/* CTA band (Figma "Frame 2353"/"Frame 2354"); copy from heymarket.com's testimonials section. */}
-        <section class="bg-purple px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby={`trusted-heading-${i}`}>
+        {/* CTA band (Figma "Frame 2353"/"Frame 2354"). */}
+        <section class="bg-purple px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby={`demo-cta-heading-${i}`}>
           <div class="mx-auto flex max-w-[920px] flex-col items-center gap-10">
-            <div class="flex flex-col items-center gap-4">
-              <h2 id={`trusted-heading-${i}`} class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
-                Trusted by thousands of businesses
-              </h2>
-              <p class="text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-[29px]">
-                Companies choose our business text messaging service for its powerful, intuitive features.
-              </p>
-            </div>
-            <div class="flex flex-wrap items-start justify-center gap-3">
-              <a
-                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
-                class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
-              >Book a demo</a>
-              {/* Figma adds the trial button to the first band only. */}
-              {i === 0 && (
-                <a
-                  href={TRIAL_URL}
-                  class="rounded px-6 py-4 text-base font-[800] uppercase leading-[18px] text-paper transition-colors hover:bg-paper/30"
-                >Start free trial</a>
-              )}
-            </div>
+            <h2 id={`demo-cta-heading-${i}`} class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
+              Learn more from a product specialist
+            </h2>
+            <a
+              href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
+              class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
+            >Book a demo</a>
           </div>
         </section>
       </>
