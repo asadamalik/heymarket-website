@@ -1,30 +1,50 @@
 ---
 // /reviews — "What customers are saying about Heymarket".
-// Built from Figma "Migrate to-v1" (node 3680:66723): white 2026 header, purple
-// rounded hero, review cards split by two "Learn more" demo CTA bands, footer.
+// Built from Figma "Reviews — v2.2" (node 3826:2560): white 2026 header, purple hero with
+// marketplace ratings, "Trusted by thousands" review grid with a mid-page specialist CTA card
+// after the first two reviews, blue closing CTA band, footer.
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { siteTestimonials } from "../data/testimonials";
 
 const A = "/heymarket-website/assets";
+const DEMO_URL = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`;
 const STARS = 5;
 
-// Logo for where each review was posted (Figma "Review Source" component, 48×48).
+// Logo + link label for where each review was posted (Figma "Review Source" component, 48×48).
 const SOURCES = {
-  hubspot: { src: `${A}/review-source-hubspot.svg`, label: "HubSpot" },
-  salesforce: { src: `${A}/review-source-salesforce.webp`, label: "Salesforce" },
-  heymarket: { src: `${A}/review-source-heymarket.svg`, label: "Heymarket" },
+  hubspot: { src: `${A}/review-source-hubspot.svg`, label: "HubSpot", linkText: "Read on HubSpot" },
+  salesforce: { src: `${A}/review-source-salesforce.webp`, label: "Salesforce", linkText: "Read on AppExchange" },
+  heymarket: { src: `${A}/review-source-heymarket.svg`, label: "Heymarket", linkText: "" },
 } as const;
 
-// Same eight reviews as heymarket.com, in the order the Figma design lists them.
-const ORDER = ["A. Farnsworth", "A. Ravenelle", "S. Taver", "S. Pinnaka", "M. Heard", "A. DiSalvo", "L. Finkelstein", "T. Clarkson"];
+// Public marketplace ratings shown in the hero (checked Oct 2026; update when they change).
+const RATINGS = [
+  {
+    source: "hubspot", score: "4.7", caption: "29 ratings on the HubSpot App Marketplace",
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket", shadow: "var(--color-yellow)",
+  },
+  {
+    source: "salesforce", score: "4.92", caption: "25 reviews on Salesforce AppExchange",
+    url: "https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000FMaZuUAL&tab=r", shadow: "var(--color-green)",
+  },
+] as const;
+
+// Product specialists, same photos as /demo.
+const SPECIALISTS = ["craig", "gracie", "josh"];
+
+// Review order from the Figma design; the CTA card sits after the first two.
+const ORDER = ["A. Farnsworth", "A. Ravenelle", "S. Taver", "M. Heard", "L. Finkelstein", "A. DiSalvo", "S. Pinnaka", "T. Clarkson"];
 const reviews = ORDER.map((author) => {
   const review = siteTestimonials.find((t) => t.author === author);
   if (!review) throw new Error(`Missing testimonial for ${author}`);
   return review;
 });
-const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
+const [firstReviews, moreReviews] = [reviews.slice(0, 2), reviews.slice(2)];
+
+// Black uppercase CTA button (Figma Button/Large) — colors vary per placement.
+const BUTTON = "inline-flex items-center justify-center rounded px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] transition-colors";
 ---
 <Base
   title="Customer Reviews | Heymarket"
@@ -33,22 +53,64 @@ const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
   <Nav variant="light" />
 
   <main>
-    <!-- Hero -->
-    <section class="reviews-hero flex flex-col items-center gap-[30px] bg-purple px-5 py-12 text-center md:py-20 lg:px-[165px]" aria-labelledby="reviews-heading">
-      <h1 id="reviews-heading" class="w-full text-[clamp(2.25rem,1.5rem+3.2vw,3.5rem)] font-[800] leading-[1.2] text-beige-30">
-        Heymarket Reviews
-      </h1>
-      <p class="w-full text-[20px] font-semibold leading-6 text-paper">What customers are saying about Heymarket</p>
+    <!-- Hero: title left, marketplace ratings right -->
+    <section
+      class="reviews-hero flex flex-col gap-10 bg-purple px-5 py-12 md:px-10 md:py-20 lg:flex-row lg:items-center lg:justify-between lg:gap-[30px] lg:px-[165px]"
+      aria-labelledby="reviews-heading"
+    >
+      <div class="flex flex-col gap-[30px]">
+        <h1 id="reviews-heading" class="text-[clamp(2.25rem,1.5rem+3.2vw,3.5rem)] font-[800] leading-[1.2] text-beige-30">
+          Heymarket Reviews
+        </h1>
+        <p class="text-[20px] font-semibold leading-6 text-paper">What customers are saying about Heymarket</p>
+      </div>
+
+      <ul class="flex flex-col gap-6 pb-2 pr-2 lg:pt-2.5" aria-label="Marketplace ratings">
+        {RATINGS.map((r) => (
+          <li>
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener"
+              class="rating-card flex items-center gap-4 rounded-2xl border border-ink bg-paper py-4 pl-5 pr-6 transition-transform hover:-translate-y-0.5 lg:w-[367px]"
+              style={`--shadow: ${r.shadow}`}
+              aria-label={`${r.score} out of 5 stars from ${r.caption} (opens in a new tab)`}
+            >
+              <img src={SOURCES[r.source].src} alt="" width="48" height="48" class="h-12 w-12 shrink-0" />
+              <span class="flex flex-col gap-1">
+                <span class="flex items-center gap-2.5">
+                  <span class="text-[28px] font-[800] leading-8 text-ink">{r.score}</span>
+                  <span class="flex gap-0.5" aria-hidden="true">
+                    {Array.from({ length: STARS }, () => (
+                      <img src={`${A}/review-star-black.svg`} alt="" width="18" height="18" class="h-[18px] w-[18px]" />
+                    ))}
+                  </span>
+                </span>
+                <span class="text-sm leading-[18px] text-ink-70">{r.caption}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
 
-    <!-- Figma order: 2 reviews, demo CTA band, remaining 6 reviews, demo CTA band again. -->
-    {REVIEW_GROUPS.map((group, i) => (
-      <>
-        {/* Reviews grid (32px right padding = 20px gutter + 12px room for the card shadow) */}
-        <section class="py-[60px]" aria-label="Customer reviews">
-          <ul class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
+    <!-- Trusted by thousands: 2 reviews, specialist CTA card, 6 more reviews -->
+    <section class="pb-[72px] pt-[60px]" aria-labelledby="trusted-heading">
+      {/* 32px right padding = 20px gutter + 12px room for the card shadow */}
+      <div class="mx-auto grid w-full max-w-[1150px] gap-10 pl-5 pr-8 md:grid-cols-2 lg:gap-[42px]">
+        <div class="flex flex-col gap-4 text-center md:col-span-2">
+          <h2 id="trusted-heading" class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
+            Trusted by thousands of businesses
+          </h2>
+          <p class="text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-[29px]">
+            Companies choose our business text messaging service for its powerful, intuitive features.
+          </p>
+        </div>
+
+        {[firstReviews, moreReviews].map((group, i) => (
+          <>
             {group.map((r) => (
-              <li class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
+              <article class="review-card flex flex-col gap-4 border border-ink bg-paper p-8">
                 <div class="flex items-center justify-between gap-4">
                   <div class="flex gap-2" role="img" aria-label={`${STARS} out of ${STARS} stars`}>
                     {Array.from({ length: STARS }, () => (
@@ -63,7 +125,7 @@ const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
                     class="h-12 w-12 shrink-0"
                   />
                 </div>
-                <h2 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h2>
+                <h3 class="text-2xl font-[800] leading-[30px] text-blue">{r.title}</h3>
                 <p class="text-base leading-6 text-ink">{r.body}</p>
                 <p class="text-base font-bold leading-6 text-[#0a0a0a]">{r.author}</p>
                 {r.url && (
@@ -72,33 +134,63 @@ const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
                     target="_blank"
                     rel="noopener"
                     class="group mt-auto inline-flex items-center gap-1 self-start text-base font-semibold leading-6 text-blue"
-                    aria-label={`View ${r.author}'s review (opens in a new tab)`}
+                    aria-label={`${SOURCES[r.source].linkText}: ${r.author}'s review (opens in a new tab)`}
                   >
-                    View More
+                    {SOURCES[r.source].linkText}
                     <svg viewBox="0 0 24 24" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
                     </svg>
                   </a>
                 )}
-              </li>
+              </article>
             ))}
-          </ul>
-        </section>
 
-        {/* CTA band (Figma "Frame 2353"/"Frame 2354"). */}
-        <section class="bg-purple px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby={`demo-cta-heading-${i}`}>
-          <div class="mx-auto flex max-w-[920px] flex-col items-center gap-10">
-            <h2 id={`demo-cta-heading-${i}`} class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
-              Learn more from a product specialist
-            </h2>
-            <a
-              href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/demo`}
-              class="rounded bg-yellow px-6 py-4 text-base font-[800] uppercase leading-[19px] tracking-[1px] text-ink transition-colors hover:bg-yellow-70"
-            >Book a demo</a>
-          </div>
-        </section>
-      </>
-    ))}
+            {i === 0 && (
+              <aside
+                class="flex flex-col gap-8 rounded-[40px] border border-ink bg-green p-8 md:col-span-2 md:flex-row md:items-center md:justify-between md:gap-10 md:p-16"
+                aria-labelledby="specialist-cta-heading"
+              >
+                <div class="flex flex-col gap-4">
+                  <h2 id="specialist-cta-heading" class="text-[clamp(1.5rem,1.2rem+1.2vw,2rem)] font-[800] leading-[1.2] text-ink">
+                    Learn more by speaking with a product specialist.
+                  </h2>
+                  <div class="flex items-center gap-3">
+                    <div class="flex">
+                      {SPECIALISTS.map((name, j) => (
+                        <span class:list={["relative block h-12 w-12 shrink-0", j > 0 && "-ml-3"]}>
+                          <img
+                            src={`${A}/demo-avatar-${name}.webp`}
+                            alt=""
+                            width="48"
+                            height="48"
+                            class="h-12 w-12 rounded-full border-2 border-green object-cover"
+                          />
+                          {j === SPECIALISTS.length - 1 && (
+                            <span class="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-paper bg-[#16a34a]" aria-hidden="true"></span>
+                          )}
+                        </span>
+                      ))}
+                    </div>
+                    <p class="text-[15px] font-medium leading-5 text-ink">Craig, Gracie, and Josh are ready to help.</p>
+                  </div>
+                </div>
+                <a href={DEMO_URL} class={`${BUTTON} shrink-0 self-start bg-ink text-paper hover:bg-ink-70 md:self-center`}>Book a demo</a>
+              </aside>
+            )}
+          </>
+        ))}
+      </div>
+    </section>
+
+    <!-- Closing CTA band -->
+    <section class="bg-[#0802b1] px-5 py-12 text-center text-paper md:py-[60px]" aria-labelledby="closing-cta-heading">
+      <div class="mx-auto flex max-w-[1110px] flex-col items-center gap-10">
+        <h2 id="closing-cta-heading" class="text-[clamp(2rem,1.6rem+1.6vw,2.5rem)] font-[800] leading-[1.2]">
+          Speak with a product specialist
+        </h2>
+        <a href={DEMO_URL} class={`${BUTTON} bg-yellow text-ink hover:bg-yellow-70`}>Book a demo</a>
+      </div>
+    </section>
   </main>
 
   <Footer showTryIt={false} />
@@ -109,6 +201,11 @@ const REVIEW_GROUPS = [reviews.slice(0, 2), reviews.slice(2)];
   .reviews-hero {
     --r: clamp(40px, 8.34vw, 120px);
     border-radius: var(--r) var(--r) 10px var(--r);
+  }
+
+  /* Rating cards: hard offset shadow in the card's accent color. */
+  .rating-card {
+    box-shadow: 8px 8px 0 var(--shadow);
   }
 
   /* Speech-bubble card with a hard purple offset shadow that follows its shape. */

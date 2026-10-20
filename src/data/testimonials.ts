@@ -1,7 +1,8 @@
 // Customer testimonials, shared by the homepage carousel and the /reviews page.
 // The first eight are the ones shown on heymarket.com (same order).
 // url: where the review was published (HubSpot Marketplace or Salesforce AppExchange), as
-// linked from heymarket.com. A. Farnsworth has no source link on heymarket.com.
+// linked from heymarket.com (HubSpot moved its listing to /marketplace/listing/heymarket in 2026).
+// A. Farnsworth has no source link on heymarket.com.
 // source: where the review came from; drives the logo on each /reviews card.
 export type ReviewSource = "hubspot" | "salesforce" | "heymarket";
 export type Testimonial = { title: string; body: string; author: string; role: string; source: ReviewSource; url?: string };
@@ -20,7 +21,7 @@ export const siteTestimonials: Testimonial[] = [
     author: "A. Ravenelle",
     source: "hubspot",
     role: "",
-    url: "https://ecosystem.hubspot.com/marketplace/apps/heymarket/reviews"
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket"
   },
   {
     title: "Amazing software and even better client support",
@@ -36,7 +37,7 @@ export const siteTestimonials: Testimonial[] = [
     author: "M. Heard",
     source: "hubspot",
     role: "",
-    url: "https://ecosystem.hubspot.com/marketplace/apps/heymarket/reviews"
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket"
   },
   {
     title: "Great automation and support!",
@@ -44,7 +45,7 @@ export const siteTestimonials: Testimonial[] = [
     author: "A. DiSalvo",
     source: "hubspot",
     role: "",
-    url: "https://ecosystem.hubspot.com/marketplace/apps/heymarket/reviews"
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket"
   },
   {
     title: "Best SMS integration",
@@ -52,7 +53,7 @@ export const siteTestimonials: Testimonial[] = [
     author: "S. Pinnaka",
     source: "hubspot",
     role: "Technology",
-    url: "https://ecosystem.hubspot.com/marketplace/apps/heymarket/reviews"
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket"
   },
   {
     title: "Great customer service and easy to use",
@@ -68,6 +69,6 @@ export const siteTestimonials: Testimonial[] = [
     author: "T. Clarkson",
     source: "hubspot",
     role: "Healthcare",
-    url: "https://ecosystem.hubspot.com/marketplace/apps/heymarket/reviews"
+    url: "https://ecosystem.hubspot.com/marketplace/listing/heymarket"
   }
 ];
